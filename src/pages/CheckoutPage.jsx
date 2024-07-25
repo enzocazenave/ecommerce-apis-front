@@ -1,5 +1,4 @@
-import { ProductOnCart } from "../components";
-import { Input } from "../components/Input";
+import { ProductOnCart, Input } from "../components";
 
 const productsOnCart = [
   {
