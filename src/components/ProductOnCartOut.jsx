@@ -21,6 +21,10 @@ export const ProductOnCartOut = ({ product }) => {
           </div>
         </div>
 
+        <p>
+          {product.units} unidades
+        </p>
+
       </div>
     </li>
   );

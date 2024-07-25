@@ -9,6 +9,7 @@ const productsOnCart = [
     price: 16250,
     size: "XL",
     description: "Gris",
+    units: 1,
     image:"https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
   },
   {
@@ -17,6 +18,7 @@ const productsOnCart = [
     price: 16250,
     size: "XL",
     description: "Gris",
+    units: 2,
     image:"https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
   }
 ];
