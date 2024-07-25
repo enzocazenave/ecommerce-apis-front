@@ -1,4 +1,4 @@
-import { ProductOnCart } from "../components";
+import { ProductOnCartOut } from "../components";
 import { Input } from "../components/Input";
 
 const productsOnCart = [
@@ -32,7 +32,7 @@ export const CheckoutPage = () => {
           <div className="mt-8">
             <ul className="space-y-4">
               {productsOnCart.map((product) => (
-                <ProductOnCart key={product.id} product={product} />
+                <ProductOnCartOut key={product.id} product={product} />
               ))}
             </ul>
           </div>
@@ -53,6 +53,12 @@ export const CheckoutPage = () => {
               <Input label="Codigo de seguridad" type="number" placeholder="Ingrese codigo de seguridad" />
               <Input label="Nombre del titular" type="text" placeholder="Ingrese nombre del titular" />
               <Input label="Fecha vencimiento" type="date" placeholder="Ingrese codigo de seguridad" />
+            </div>
+
+            <h2>Datos de descuento</h2>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Input label="Codigo de descuento" type="text" placeholder="Ingrese codigo de descuento" />
             </div>
           </form>
 
