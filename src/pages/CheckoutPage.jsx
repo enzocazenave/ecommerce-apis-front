@@ -1,5 +1,5 @@
-import { ProductOnCartOut } from "../components";
-import { Input } from "../components/Input";
+import { ProductOnCartOut } from "../components/ProductOnCartOut";
+import { ProductOnCart, Input } from "../components";
 
 const productsOnCart = [
   {
