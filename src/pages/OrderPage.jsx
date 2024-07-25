@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { ProductOnCart } from "../components";
+import { ProductOnCartOut } from "../components/ProductOnCartOut";
 
 const productsOnCart = [
   {
@@ -34,7 +35,7 @@ export const OrderPage = () => {
           <div className="mt-8">
             <ul className="space-y-4">
               {productsOnCart.map((product) => (
-                <ProductOnCart key={product.id} product={product} />
+                <ProductOnCartOut key={product.id} product={product} />
               ))}
             </ul>
           </div>
