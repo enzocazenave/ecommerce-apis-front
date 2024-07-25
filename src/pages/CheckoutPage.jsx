@@ -38,14 +38,15 @@ export const CheckoutPage = () => {
           </div>
           
           <form className="mt-8">
-            <p>Datos personales</p>
+            <h2>Datos personales</h2>
+
             <div className="grid grid-cols-2 gap-2 mb-6">
               <Input label="Email" type="text" placeholder="Ingrese email" />
               <Input label="Dirección" type="text" placeholder="Ingrese dirección" />
               <Input label="Teléfono" type="text" placeholder="Ingrese teléfono" /> 
             </div>
  
-            <p>Datos de pago</p>
+            <h2>Datos de pago</h2>
 
             <div className="grid grid-cols-2 gap-4">
               <Input label="Numero de tarjeta" type="number" placeholder="Ingrese numero de tarjeta" />
