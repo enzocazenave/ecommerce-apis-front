@@ -10,6 +10,7 @@ import {
     CheckoutPage,
     CreateProductPage
 } from "../pages";
+import { Navigate } from "react-router-dom";
 
 export const AppRouter = () => {
     return (
@@ -23,6 +24,7 @@ export const AppRouter = () => {
             <Route path="/cart" element={<CartPage/>}/>
             <Route path="/cart/checkout" element={<CheckoutPage/>}/>
             <Route path="/order/:id" element={<OrderPage/>}/>
+            <Route path="/*" element={<Navigate to="/" replace />}/>
         </Routes>
     );
 };
