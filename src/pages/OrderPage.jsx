@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import { ProductOnCart } from "../components";
 
 const productsOnCart = [
@@ -19,13 +20,15 @@ const productsOnCart = [
   }
 ];
 
-export const CartPage = () => {
+export const OrderPage = () => {
+  const { id } = useParams();
+  
   return (
     <section>
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <header>
-            <h1>Tu Carrito</h1>
+            <h1>Tu Order fue pagada con éxito</h1>
           </header>
 
           <div className="mt-8">
@@ -38,8 +41,9 @@ export const CartPage = () => {
 
           <div className="flex justify-between mt-10">
             <p>Total: ${productsOnCart.reduce((total, product) => total + product.price, 0)}</p>
-            <button>Comprar carrito</button>
           </div>
+
+          <p>Gracias por comprar en nuestra tienda! Estarás recibiendo un correo con el tracking de tu pedido.</p>
         </div>
       </div>
     </section>

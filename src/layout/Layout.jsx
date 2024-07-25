@@ -1,12 +1,11 @@
-import { Footer } from "./Footer";
-import { Navbar } from "./Navbar";
+import { Footer, Navbar } from "./";
 
-export const Layout = () => {
+export const Layout = ({ children }) => {
   return (
     <>
-        <Navbar />
-      
-        <Footer />
+      <Navbar />
+      {children}
+      <Footer />
     </>
   );
 };
