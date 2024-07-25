@@ -2,7 +2,7 @@ import { Product } from "./";
 
 export const ProductList = ({ products, title, description = "" }) => {
   return (
-    <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+    <div className="py-8 sm:py-12">
       <header>
         <h2>{title}</h2>
         <p>{description}</p>
