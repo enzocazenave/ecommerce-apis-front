@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { ProductOnCart } from "../components";
+import { ProductOnCartOut } from "../components/ProductOnCartOut";
 
 const productsOnCart = [
   {
@@ -8,6 +9,7 @@ const productsOnCart = [
     price: 16250,
     size: "XL",
     description: "Gris",
+    units: 1,
     image:"https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
   },
   {
@@ -16,6 +18,7 @@ const productsOnCart = [
     price: 16250,
     size: "XL",
     description: "Gris",
+    units: 2,
     image:"https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
   }
 ];
@@ -34,7 +37,7 @@ export const OrderPage = () => {
           <div className="mt-8">
             <ul className="space-y-4">
               {productsOnCart.map((product) => (
-                <ProductOnCart key={product.id} product={product} />
+                <ProductOnCartOut key={product.id} product={product} />
               ))}
             </ul>
           </div>
