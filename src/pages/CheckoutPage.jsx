@@ -1,4 +1,5 @@
 import { ProductOnCart } from "../components";
+import { Input } from "../components/Input";
 
 const productsOnCart = [
   {
@@ -39,43 +40,18 @@ export const CheckoutPage = () => {
           <form className="mt-8">
             <p>Datos personales</p>
             <div className="grid grid-cols-2 gap-2 mb-6">
-              <div className="flex flex-col">
-                <label>Email</label>
-                <input type="text" placeholder="Ingrese email" />
-              </div>
-
-              <div className="flex flex-col">
-                <label>Dirección</label>
-                <input type="text" placeholder="Ingrese dirección" />
-              </div>
-              <div className="flex flex-col">
-                <label>Teléfono</label>
-                <input type="text" placeholder="Ingrese teléfono" />
-              </div>
+              <Input label="Email" type="text" placeholder="Ingrese email" />
+              <Input label="Dirección" type="text" placeholder="Ingrese dirección" />
+              <Input label="Teléfono" type="text" placeholder="Ingrese teléfono" /> 
             </div>
  
             <p>Datos de pago</p>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col">
-                <label>Numero de tarjeta</label>
-                <input type="number" placeholder="Ingrese numero de tarjeta" />
-              </div>
-
-              <div className="flex flex-col">
-                <label>Codigo de seguridad</label>
-                <input type="number" placeholder="Ingrese codigo de seguridad" />
-              </div>
-
-              <div className="flex flex-col">
-                <label>Nombre del titular</label>
-                <input type="text" placeholder="Ingrese nombre del titular" />
-              </div>
-
-              <div className="flex flex-col">
-                <label>Fecha vencimiento</label>
-                <input type="date" placeholder="Ingrese codigo de seguridad" />
-              </div>
+              <Input label="Numero de tarjeta" type="number" placeholder="Ingrese numero de tarjeta" />
+              <Input label="Codigo de seguridad" type="number" placeholder="Ingrese codigo de seguridad" />
+              <Input label="Nombre del titular" type="text" placeholder="Ingrese nombre del titular" />
+              <Input label="Fecha vencimiento" type="date" placeholder="Ingrese codigo de seguridad" />
             </div>
           </form>
 
