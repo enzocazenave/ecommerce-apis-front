@@ -1,67 +1,115 @@
-import {ProductOnCartOut} from "../components/ProductOnCartOut";
-import {ProductOnCart, Input} from "../components";
-
-const productsOnCart = [
-    {
-        id: 1,
-        name: "Remera Básica",
-        price: 16250,
-        size: "XL",
-        description: "Gris",
-        image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
-    },
-    {
-        id: 2,
-        name: "Remera Básica",
-        price: 16250,
-        size: "XL",
-        description: "Gris",
-        image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
-    }
-];
+import { ProductOnCartOut } from "../components/ProductOnCartOut";
+import { Input } from "../components";
+import { useSelector } from "react-redux";
+import backend from "../api/axios";
 
 export const CheckoutPage = () => {
-    return (
-        <section>
-            <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-                <div className="mx-auto max-w-3xl">
-                    <header>
-                        <h1>Confirma tu pedido</h1>
-                    </header>
+  const discountCoupon = useSelector((state) => state.discountCoupon);
+  const cart = useSelector((state) => state.cart);
+  const totalPrice = cart.reduce((total, product) => total + product.price * product.units, 0);
+  const totalDiscount = totalPrice - (totalPrice * discountCoupon.percentage) / 100;
 
-                    <div className="mt-8">
-                        <ul className="space-y-4">
-                            {productsOnCart.map((product) => (
-                                <ProductOnCartOut key={product.id} product={product}/>
-                            ))}
-                        </ul>
-                    </div>
+  const handleConfirmOrder = async () => {
+    const data = {
+        userId: 1,
+        purchasedProductRequests: cart.map((product) => {
+            return {
+                productId: product.id,
+                units: product.units
+            }
+        }),
+    }
 
-                    <form className="mt-8">
-                        <h2>Datos personales</h2>
+    if (discountCoupon && discountCoupon.percentage) {
+        data.discountCode = discountCoupon.code
+    }
 
-                        <div className="grid grid-cols-2 gap-2 mb-6">
-                            <Input label="Email" type="text" placeholder="Ingrese email"/>
-                            <Input label="Dirección" type="text" placeholder="Ingrese dirección"/>
-                            <Input label="Teléfono" type="text" placeholder="Ingrese teléfono"/>
-                        </div>
+    backend.post("/purchase_orders", data).then((response) => {
+        console.log(response)
+    });
+  };
 
-                        <h2>Datos de pago</h2>
+  return (
+    <section>
+      <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <div className="mx-auto max-w-3xl">
+          <header>
+            <h1>Confirma tu pedido</h1>
+          </header>
 
-                        <div className="grid grid-cols-2 gap-4">
-                            <Input label="Numero de tarjeta" type="number" placeholder="Ingrese numero de tarjeta"/>
-                            <Input label="Codigo de seguridad" type="number" placeholder="Ingrese codigo de seguridad"/>
-                            <Input label="Nombre del titular" type="text" placeholder="Ingrese nombre del titular"/>
-                            <Input label="Fecha vencimiento" type="date" placeholder="Ingrese codigo de seguridad"/>
-                        </div>
-                    </form>
+          <div className="mt-8">
+            <ul className="space-y-4">
+              {cart.map((product) => (
+                <ProductOnCartOut key={product.id} product={product} />
+              ))}
+            </ul>
+          </div>
 
-                    <div className="flex justify-between mt-10">
-                        <p>Total: ${productsOnCart.reduce((total, product) => total + product.price, 0)}</p>
-                        <button>Confirmar pedido</button>
-                    </div>
-                </div>
+          <form className="mt-8">
+            <h2 className="mb-4 font-semibold">Datos personales</h2>
+
+            <div className="grid grid-cols-2 gap-2 mb-6">
+              <Input label="Email" type="text" placeholder="Ingrese email" />
+              <Input
+                label="Dirección"
+                type="text"
+                placeholder="Ingrese dirección"
+              />
+              <Input
+                label="Teléfono"
+                type="text"
+                placeholder="Ingrese teléfono"
+              />
             </div>
-        </section>
-    )
-}
+
+            <h2 className="mb-2 font-semibold">Datos de pago</h2>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Input
+                label="Numero de tarjeta"
+                type="number"
+                placeholder="Ingrese numero de tarjeta"
+              />
+              <Input
+                label="Codigo de seguridad"
+                type="number"
+                placeholder="Ingrese codigo de seguridad"
+              />
+              <Input
+                label="Nombre del titular"
+                type="text"
+                placeholder="Ingrese nombre del titular"
+              />
+              <Input
+                label="Fecha vencimiento"
+                type="date"
+                placeholder="Ingrese codigo de seguridad"
+              />
+            </div>
+          </form>
+
+          <div className="flex justify-between mt-10">
+            {discountCoupon && discountCoupon.percentage ? (
+              <div>
+                <p className="line-through">Total: ${totalPrice}</p>
+                <p>
+                  Total con descuento: $
+                  {totalDiscount}
+                </p>
+              </div>
+            ) : (
+              <p>Total: ${totalPrice}</p>
+            )}
+
+            <button
+                onClick={handleConfirmOrder}
+                className="bg-blue-500 text-white px-3 py-2 h-fit text-sm font-medium rounded-full"
+            >
+              Confirmar pedido
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

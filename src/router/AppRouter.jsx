@@ -8,7 +8,8 @@ import {
     CartPage,
     OrderPage,
     CheckoutPage,
-    CreateProductPage
+    CreateProductPage,
+    UpdateProductPage
 } from "../pages";
 import { Navigate } from "react-router-dom";
 
@@ -19,8 +20,9 @@ export const AppRouter = () => {
             <Route path="/login" element={<LoginPage/>}/>
             <Route path="/register" element={<RegisterPage/>}/>
             <Route path="/products" element={<ProductsPage/>}/>
-            <Route path="/products/:id" element={<ProductPage/>}/>
+            <Route path="/products/update/:name" element={<UpdateProductPage/>}/>
             <Route path="/products/new" element={<CreateProductPage/>}/>
+            <Route path="/products/:id" element={<ProductPage/>}/>
             <Route path="/cart" element={<CartPage/>}/>
             <Route path="/cart/checkout" element={<CheckoutPage/>}/>
             <Route path="/order/:id" element={<OrderPage/>}/>
