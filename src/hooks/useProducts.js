@@ -7,19 +7,16 @@ export const useProducts = ({ id }) => {
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState(false);
 
-  useEffect(() => {
-    handleGetProducts(id)
+  useEffect(() => {  
+    handleGetProducts(id);
   }, [])
 
-  const handleGetProducts = () => {
-    backend.get(id ? `/products/${id}/matching_sizes` : "/products")
+  const handleGetProducts = (id) => {
+    const url = id ? `/products/${id}/matching_sizes` : `/products`;
+
+    backend.get(url)
       .then((response) => {
-        setProducts(
-          productResponseFormatter(
-            response.data,
-            !!id
-          )
-        );
+        setProducts(productResponseFormatter(response.data, !!id))
       }).catch((error) => {
         console.log(error)
       })
@@ -31,6 +28,7 @@ export const useProducts = ({ id }) => {
     }
 
     const url = name.length > 0 ? `/products/search/${name}` : `/products/productsByPrice?priceMin=${from}&priceMax=${to}`;
+    
     backend.get(url)
       .then((response) => {
         setProducts(productResponseFormatter(response.data, true));
@@ -52,29 +50,3 @@ export const useProducts = ({ id }) => {
     resetFilters
   }
 }
-
-/*export const useProducts = ({ id = null }) => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    backend.get(`/products${id ? `/${id}/matching_sizes` : ""}`)
-      .then((response) => {
-        setProducts(
-          productResponseFormatter(
-            response.data, 
-            !!id
-          )
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
-  return {
-    products,
-    loading,
-  };
-};
-*/
