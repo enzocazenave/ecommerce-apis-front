@@ -5,12 +5,12 @@ export const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   const handleLogin = () => {
-    // Lógica para autenticar al usuario
+    // Lógica para autenticar al usuario.
     setIsAuthenticated(true);
   };
 
   const handleLogout = () => {
-    // Lógica para cerrar sesión del usuario
+    // Lógica para cerrar sesión del usuario.
     setIsAuthenticated(false);
   };
   
