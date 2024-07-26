@@ -70,7 +70,7 @@ export const removeCartProductById = (productId) => {
     }
 }
 
-export const loginToCheckout = (booleanValue) => {
+export const updateLoginToCheckout = (booleanValue) => {
     return async (dispatch) => {
         try {
             return dispatch({
@@ -111,3 +111,4 @@ export  const  overrideCart = (cart) => {
         }
     }
 }
+
