@@ -16,7 +16,6 @@ export const ProductPage = () => {
   const currentProduct = products[0];
   const [size, setSize] = useState(null);
 
-  console.log(state)
   useEffect(() => {
     setSize(currentProduct?.sizes[0]);
   }, [products])

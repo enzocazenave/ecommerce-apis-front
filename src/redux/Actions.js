@@ -1,12 +1,10 @@
-import {ADD_PRODUCT_TO_CART, APPLY_DISCOUNTCOUPON} from "./Action-types.js";
+import {ADD_PRODUCT_TO_CART, APPLY_DISCOUNTCOUPON, UPDATE_CART} from "./Action-types.js";
 import backend from "../api/axios.js";
 
 export const applyDiscountCoupon = (couponCode) => {
     return async (dispatch) => {
-        console.log("action executed")
         try {
             const response = await backend.get(`${"/discount_coupons/code/"}${couponCode}`)
-            console.log(response)
             const data = response.data
             return dispatch({
                 type: APPLY_DISCOUNTCOUPON,
@@ -16,6 +14,15 @@ export const applyDiscountCoupon = (couponCode) => {
             console.error("Error aplicando cupón:", error);
             alert(error.response.data)
         }
+    }
+}
+
+export const updateCart = (product) => {
+    return async (dispatch) => {
+        return dispatch({
+            type: UPDATE_CART,
+            payload: product,
+        })
     }
 }
 
