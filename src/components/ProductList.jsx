@@ -1,6 +1,7 @@
 import { Product } from "./";
 
 export const ProductList = ({ products, title, description = "" }) => {
+  console.log(products)
   return (
     <div className="py-8 sm:py-12">
       <header>
