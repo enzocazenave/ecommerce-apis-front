@@ -9,9 +9,17 @@ export const CreateProductPage = () => {
     const [descripción, setDescripción] = useState('');
     const [talle, setconfirmarTalle] = useState('');
     const [uRL, setconfirmarURL] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [tallesDisponibles, setTallesDisponibles] = useState([]);
+    const options = [
+      { value: 0, label: 'Selecciona una Categoria', disabled: true },
+      { value: 1, label: 'Remeras' },
+      { value: 2, label: 'Pantalones'},
+      { value: 2, label: 'Buzos'},
+    ];
+
     //const [error, setError] = useState(null); 
 
-        // Envío de datos al servidor (adapta a tu backend)
         fetch('/api/Crear¨Producto', {
           method: 'POST',
           headers: {
@@ -38,7 +46,29 @@ export const CreateProductPage = () => {
           // Redirigir a otra página o mostrar un mensaje de éxito
         })
 
+        const handleChange = (event) => {
+          setSelectedCategory(event.target.value);
+        
+          // Filtrar talles según la categoría
+          let nuevosTalles;
+          switch (event.target.value) {
+            case "1": // Remeras
+              nuevosTalles = ["S", "M", "L", "XL"];
+              break;
+            case "2": // Pantalones
+              nuevosTalles = ["30", "32", "34", "36"];
+              break;
+            case "3": // Buzos (asumiendo que tiene talles distintos)
+              nuevosTalles = ["S", "M", "L", "XL"];
+              break;
+            default:
+              nuevosTalles = []; // No hay talles disponibles para otras categorías
+          }
+          setTallesDisponibles(nuevosTalles);
+        };
 
+
+//me queda validar los valores. Esto lo deberia hacer con funciones pero nose como aplicarlas cuando utilizo el componente
 
 return (<section>
             <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
@@ -48,15 +78,56 @@ return (<section>
                     <Input type="number" label="Stock"  placeholder="Stock" value={stock} onChange={(e) => setStock(e.target.value)}/>
                     <Input type="number" label="Precio"  placeholder="Precio" value={precio} onChange={(e) => setPrecio(e.target.value)}/>
                     <Input type="text" label="Descripción"  placeholder="Descripción" value={descripción} onChange={(e) => setDescripción(e.target.value)}/>
-                    <Input type="text" label="Talle"  placeholder="Talle" value={talle} onChange={(e) => setconfirmarTalle(e.target.value)}/>
                     <Input type="text" label="URL"  placeholder="URL" value={uRL} onChange={(e) => setconfirmarURL(e.target.value)}/>
-                    <select value={0}>
-                        <option value={0} disabled>
-                            Selecciona una caterogia...
+                    <select value={selectedCategory} onChange={handleChange}>
+                      {options.map((option) => (
+                        <option key={option.value} value={option.value} disabled={option.disabled}>
+                          {option.label}
                         </option>
+                      ))}
                     </select>
-                    <button className="border">Crear</button>
+                    <select value="" onChange={(e) => {}}>  {/* Elimina la llave extra */}
+                    {tallesDisponibles.map((talle) => (
+                      <option key={talle} value={talle}>
+                        {talle}
+                      </option>
+                    ))}
+                  </select>
+                    <button className="border">Agregar</button>
                 </div>
+            </div>
+            <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+              <h1>Lista de productos a agregar</h1>
+            </div>
+            <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+            <table border="1">
+                <tr>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>caterogia</th>
+                  <th>URL</th>
+                  <th>Talle</th>
+                  <th>Stock</th>
+                </tr>
+                <tr>
+                  <td>Remera 1</td>
+                  <td>Producto AAAAA</td>
+                  <td>Remeras</td>
+                  <td>http://ejemplo.com.ar</td>
+                  <td>30</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>Remera 1</td>
+                  <td>Producto BBBBB</td>
+                  <td>Barcelona</td>
+                  <td>http://ejemplo.com.ar</td>
+                  <td>30</td>
+                  <td>10</td>
+                </tr>
+              </table>
+
+
             </div>
     </section>);
 };

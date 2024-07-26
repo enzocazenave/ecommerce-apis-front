@@ -11,7 +11,6 @@ export const RegisterPage = () => {
 
   const handleSubmit = (event) => { event.preventDefault();
 
-      // Validaciones básicas
       if (!nombre || !apellido || !email || !contrasena || !confirmarContrasena) {
         setError('Por favor, completa todos los campos.');
         return;
@@ -22,14 +21,12 @@ export const RegisterPage = () => {
         return;
       }
 
-      // Validación de email (simplificada, puedes usar una librería más robusta)
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         setError('Por favor, ingresa un email válido.');
         return;
       }
 
-      // Envío de datos al servidor (adapta a tu backend)
       fetch('/api/register', {
         method: 'POST',
         headers: {
@@ -51,14 +48,13 @@ export const RegisterPage = () => {
       })
       .then(data => {
         console.log('Usuario registrado:', data);
-        // Redirigir a otra página o mostrar un mensaje de éxito
+
       })
       .catch(error => {
         setError('Error al registrar el usuario. Por favor, intenta más tarde.');
         console.error('Error:', error);
       });
     };
-
 
   return (
 
