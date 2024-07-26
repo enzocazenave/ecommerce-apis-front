@@ -7,9 +7,10 @@ const initialState = {
     access: false
 }
 
-export const cartReducer = (state = initialState, action) => {
+export const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case APPLY_DISCOUNTCOUPON:
+            console.log(action)
             return {
                 ...state,
                 discountCoupon: action.payload,
