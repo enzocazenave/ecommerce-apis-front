@@ -1,5 +1,9 @@
+import {useState} from "react";
+
+
 export const ProductOnCart = ({ product }) => {
-  return (
+  const [unit, setUni] = useState(1)
+    return (
     <li>
       <img
         src={product.image}
@@ -21,7 +25,7 @@ export const ProductOnCart = ({ product }) => {
           </div>
         </div>
 
-        <input type="number" value="1" />
+        <input type="number" value={unit} onChange={(event)=> setUni(event.target.value)} />
       </div>
     </li>
   );
