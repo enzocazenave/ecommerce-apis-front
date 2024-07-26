@@ -1,4 +1,8 @@
 import {Input, ProductOnCart} from "../components";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {applyDiscountCoupon} from "../redux/Actions.js";
+import {Form} from "react-router-dom";
 
 const productsOnCart = [
     {
@@ -20,6 +24,24 @@ const productsOnCart = [
 ];
 
 export const CartPage = () => {
+    const discountCoupon = useSelector(state => state.discountCoupon);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (discountCoupon?.code) {
+            console.log(discountCoupon);
+            dispatch(applyDiscountCoupon(discountCoupon.code))
+        }
+    }, [dispatch]);
+
+    const handlerDiscountCoupon = (event) => {
+        event.preventDefault()
+        const formData = new FormData(event.target)
+        const form = Object.fromEntries(formData.entries())
+        console.log(form.DiscountValue)
+        dispatch(applyDiscountCoupon(form.DiscountValue))
+    }
+
     return (
         <section>
             <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
@@ -38,11 +60,12 @@ export const CartPage = () => {
 
                     <h2>Datos de descuento</h2>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <Input label="Codigo de descuento" type="text" placeholder="Ingrese codigo de descuento"/>
-                    </div>
-                    <button>Aplicar descuento</button>
-
+                    <form onSubmit={handlerDiscountCoupon}>
+                        <div className="grid grid-cols-2 gap-4">
+                            <Input label="Codigo de descuento" type="text" placeholder={discountCoupon.code} name="DiscountValue"/>
+                        </div>
+                        <button>Aplicar descuento</button>
+                    </form>
                     <div className="flex justify-between mt-10">
                         <p>Total: ${productsOnCart.reduce((total, product) => total + product.price, 0)}</p>
                         <button>Comprar carrito</button>
