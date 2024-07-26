@@ -3,17 +3,28 @@ import { useParams } from "react-router-dom";
 import { useProducts } from "../hooks";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { addProductToCart } from "../redux/Actions";
+import { useSelector } from "react-redux";
 
 export const ProductPage = () => {
+  const state = useSelector((state) => state.cart);
   const { id } = useParams();
-  const { products, loading } = useProducts({ id });
+  const { products } = useProducts({ id });
+  const dispatch = useDispatch()
   
   const currentProduct = products[0];
   const [size, setSize] = useState(null);
 
+  console.log(state)
   useEffect(() => {
     setSize(currentProduct?.sizes[0]);
   }, [products])
+
+  const handleAddProductToCart = () => {
+
+    dispatch(addProductToCart({ id: size.id, name: currentProduct.name, price: currentProduct.price, image: currentProduct.image, description: currentProduct.description, size: size.size, units: 1 }))
+  }
 
   return (
     <section>
@@ -125,7 +136,7 @@ export const ProductPage = () => {
 
             <div className="flex justify-between items-center">
               <p className="text-2xl">$ {currentProduct?.price}</p>
-              <button className="bg-blue-500 text-white px-3 py-2 h-fit text-sm font-medium rounded-full">
+              <button onClick={handleAddProductToCart} className="bg-blue-500 text-white px-3 py-2 h-fit text-sm font-medium rounded-full">
                 + Carrito
               </button>
             </div>
