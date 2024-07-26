@@ -1,4 +1,4 @@
-export const productResponseFormatter = (productsResponse, isSearchById) => {
+export const productResponseFormatter = (productsResponse, isSearchById = false) => {
   const productsIndexLocation = {};
   const newProducts = [];
 

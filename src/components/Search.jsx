@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Input } from "./Input.jsx";
 
-export const Search = ({ handleSubmit, filteredProducts, message, resetFilters }) => {
+export const Search = ({ handleSubmit, filtered, resetFilters }) => {
   const [name, setName] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  
+  const isDisabled = name === "" && from === "" && to === "";
 
   const handleReset = () => {
     setName("");
@@ -70,11 +72,13 @@ export const Search = ({ handleSubmit, filteredProducts, message, resetFilters }
         disabled={name !== ""}
       />
 
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs">
+      <button
+        disabled={isDisabled}
+        className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs ${isDisabled ? 'opacity-80' : ''}`}>
         Aplicar filtro
       </button>
 
-      {filteredProducts.length > 0 || message.length > 0
+      {filtered
         ? <button className="text-red-600 rounded text-xs" onClick={handleReset}>Limpiar filtro</button>
         : null
       }
