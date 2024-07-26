@@ -1,4 +1,4 @@
-import {ADD_PRODUCT_TO_CART, APPLY_DISCOUNTCOUPON, UPDATE_CART} from "./Action-types.js";
+import {ADD_PRODUCT_TO_CART, APPLY_DISCOUNTCOUPON, REMOVE_DISCOUNTCOUPON, UPDATE_CART} from "./Action-types.js";
 import backend from "../api/axios.js";
 
 export const applyDiscountCoupon = (couponCode) => {
@@ -32,5 +32,19 @@ export const addProductToCart = (product) => {
             type: ADD_PRODUCT_TO_CART,
             payload: product,
         })
+    }
+}
+
+export const removeDiscountCoupon = () => {
+    return async (dispatch) => {
+        try {
+            return dispatch({
+                type: REMOVE_DISCOUNTCOUPON,
+                payload: {},
+            })
+        } catch (error) {
+            console.error("Error quitando cupón:", error);
+            alert(error.response.data)
+        }
     }
 }

@@ -1,12 +1,11 @@
 import {Input, ProductOnCart} from "../components";
 import {useDispatch, useSelector} from "react-redux";
-import {applyDiscountCoupon} from "../redux/Actions.js";
+import {applyDiscountCoupon, removeDiscountCoupon} from "../redux/Actions.js";
 
 export const CartPage = () => {
 
     const discountCoupon = useSelector(state => state.discountCoupon);
     const cart = useSelector(state => state.cart);
-
     const dispatch = useDispatch();
 
     const handlerDiscountCoupon = (event) => {
@@ -16,7 +15,11 @@ export const CartPage = () => {
         dispatch(applyDiscountCoupon(form.DiscountValue))
     }
 
-    console.log(cart)
+    const cleanUpDiscountCoupon = () => {
+        event.preventDefault()
+        dispatch(removeDiscountCoupon())
+    }
+
     const totalPrice = cart.reduce((total, product) => total + (product.price * product.units), 0)
     return (
         <section>
@@ -45,10 +48,11 @@ export const CartPage = () => {
                             <Input label="Código de descuento" type="text"
                                    placeholder={discountCoupon ? discountCoupon.code : ""}
                                    name="DiscountValue" disabled={discountCoupon && discountCoupon.percentage}/>
-                            {discountCoupon && discountCoupon.percentage ? (
+
+                            {discountCoupon && discountCoupon.code ? (
                                 <button
-                                    className="bg-blue-500 text-white px-2 py-1 h-fit text-xs font-medium rounded-full">Quitar cupón
-                                </button>
+                                    className="bg-blue-500 text-white px-2 py-1 h-fit text-xs font-medium rounded-full"
+                                    onClick={cleanUpDiscountCoupon}>Quitar cupón </button>
                             ) : (
                                 <button
                                     className="bg-blue-500 text-white px-2 py-1 h-fit text-xs font-medium rounded-full">Aplicar
