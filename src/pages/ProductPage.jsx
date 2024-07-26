@@ -22,8 +22,16 @@ export const ProductPage = () => {
   }, [products])
 
   const handleAddProductToCart = () => {
-
-    dispatch(addProductToCart({ id: size.id, name: currentProduct.name, price: currentProduct.price, image: currentProduct.image, description: currentProduct.description, size: size.size, units: 1 }))
+    dispatch(addProductToCart({ 
+      id: size.id, 
+      name: currentProduct.name, 
+      price: currentProduct.price, 
+      image: currentProduct.image, 
+      description: currentProduct.description, 
+      size: size.size, 
+      stock: size.stock,
+      units: 1 
+    }))
   }
 
   return (
