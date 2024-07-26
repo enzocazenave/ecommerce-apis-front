@@ -1,6 +1,6 @@
 import {Input, ProductOnCart} from "../components";
 import {useDispatch, useSelector} from "react-redux";
-import {applyDiscountCoupon, loginToCheckout, removeDiscountCoupon} from "../redux/Actions.js";
+import {applyDiscountCoupon, updateLoginToCheckout, removeDiscountCoupon} from "../redux/Actions.js";
 import {useNavigate} from "react-router-dom";
 
 export const CartPage = () => {
@@ -27,7 +27,7 @@ export const CartPage = () => {
         if (isLogged) {
             navigate('/cart/checkout')
         } else {
-            dispatch(loginToCheckout(true))
+            dispatch(updateLoginToCheckout(true))
             navigate('/login')
         }
     }
