@@ -9,7 +9,7 @@ export const CartPage = () => {
     const cart = useSelector(state => state.cart);
     const dispatch = useDispatch();
     const navigate = useNavigate()
-    const logicAccess = useSelector(state => state.logicAccess);
+    const isLogged = useSelector(state => state.isLogged);
 
     const handlerDiscountCoupon = (event) => {
         event.preventDefault()
@@ -24,7 +24,7 @@ export const CartPage = () => {
     }
 
     const BuyLogic = () => {
-        if (logicAccess) {
+        if (isLogged) {
             navigate('/cart/checkout')
         } else {
             dispatch(loginToCheckout(true))
@@ -88,6 +88,7 @@ export const CartPage = () => {
 
                         <button
                             className="bg-blue-500 text-white px-3 py-2 h-fit text-sm font-medium rounded-full"
+                            disabled={cart.length === 0}
                             onClick={() => BuyLogic()}>Comprar
                             carrito
                         </button>

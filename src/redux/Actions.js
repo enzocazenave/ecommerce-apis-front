@@ -4,7 +4,7 @@ import {
     REMOVE_DISCOUNTCOUPON,
     UPDATE_CART,
     REMOVE_PRODUCT_FROM_CART,
-    LOGINTOCHECKOUT
+    LOGINTOCHECKOUT, UPDATEISLOGGED, OVERRIDE_CART
 } from "./Action-types.js";
 import backend from "../api/axios.js";
 
@@ -79,6 +79,34 @@ export const loginToCheckout = (booleanValue) => {
             })
         } catch (error) {
             console.error("Error configurando redirect del login:", error);
+            alert(error.response.data)
+        }
+    }
+}
+
+export  const  updateIsLogged = (booleanValue) => {
+    return async (dispatch) => {
+        try {
+            return dispatch({
+                type: UPDATEISLOGGED,
+                payload: booleanValue,
+            })
+        } catch (error) {
+            console.error("Error configurando login global variable:", error);
+            alert(error.response.data)
+        }
+    }
+}
+
+export  const  overrideCart = (cart) => {
+    return async (dispatch) => {
+        try {
+            return dispatch({
+                type: OVERRIDE_CART,
+                payload: cart,
+            })
+        } catch (error) {
+            console.error("Error overrideando carrito:", error);
             alert(error.response.data)
         }
     }

@@ -2,16 +2,14 @@ import {
     ADD_PRODUCT_TO_CART,
     APPLY_DISCOUNTCOUPON,
     REMOVE_DISCOUNTCOUPON,
-    LOG_IN,
-    LOG_OUT,
-    UPDATE_CART, REMOVE_PRODUCT_FROM_CART, LOGINTOCHECKOUT
+    UPDATE_CART, REMOVE_PRODUCT_FROM_CART, LOGINTOCHECKOUT, UPDATEISLOGGED, OVERRIDE_CART
 } from "./Action-types.js";
 
 const initialState = {
     cart: [],
     discountCoupon: {},
     products: [],
-    logicAccess: false,
+    isLogged: false,
     loginToCheckout: false
 }
 
@@ -26,6 +24,11 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 discountCoupon: {}
+            }
+        case OVERRIDE_CART:
+            return {
+                ...state,
+                cart: action.payload
             }
         case UPDATE_CART:
             const productInCartIndex = [...state.cart].findIndex(product => product.id === action.payload.id)
@@ -44,10 +47,6 @@ export const rootReducer = (state = initialState, action) => {
                 ...state,
                 cart: [...state.cart, action.payload]
             }
-        case LOG_IN:
-            return {...state, access: true}
-        case LOG_OUT:
-            return {...state, access: false}
         case ADD_PRODUCT_TO_CART:
             const currentCart = [...state.cart]
             const isProductInCart = currentCart.findIndex(product => product.id === action.payload.id)
@@ -72,9 +71,11 @@ export const rootReducer = (state = initialState, action) => {
                 updatedCart.splice(productIndex, 1)
             }
 
-            return { ...state, cart: updatedCart }
+            return {...state, cart: updatedCart}
         case LOGINTOCHECKOUT:
             return {...state, loginToCheckout: action.payload}
+        case UPDATEISLOGGED:
+            return {...state, isLogged: action.payload}
         default:
             return state
     }
