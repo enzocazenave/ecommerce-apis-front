@@ -22,7 +22,9 @@ export const rootReducer = (state = initialState, action) => {
                 discountCoupon: action.payload,
             }
         case REMOVE_DISCOUNTCOUPON:
-            return {...state}
+            return {
+                ...state,
+                discountCoupon: {}}
         case UPDATE_CART:
             const productInCartIndex = [...state.cart].findIndex(product => product.id === action.payload.id)
 
