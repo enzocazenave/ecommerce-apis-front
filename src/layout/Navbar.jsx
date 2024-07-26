@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 export const Navbar = () => {
+
   return (
     <header className="sticky top-0 z-50 border-b bg-white">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
