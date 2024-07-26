@@ -250,9 +250,6 @@ export const CreateProductPage = () => {
                 caterogia
               </th>
               <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                URL
-              </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                 Talle
               </th>
               <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
