@@ -1,4 +1,4 @@
-import {APPLY_DISCOUNTCOUPON} from "./Action-types.js";
+import {ADD_PRODUCT_TO_CART, APPLY_DISCOUNTCOUPON} from "./Action-types.js";
 import backend from "../api/axios.js";
 
 export const applyDiscountCoupon = (couponCode) => {
@@ -17,5 +17,14 @@ export const applyDiscountCoupon = (couponCode) => {
 
             alert(error.response.data)
         }
+    }
+}
+
+export const addProductToCart = (product) => {
+    return async (dispatch) => {
+        return dispatch({
+            type: ADD_PRODUCT_TO_CART,
+            payload: product,
+        })
     }
 }
