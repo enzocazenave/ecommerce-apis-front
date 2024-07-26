@@ -1,4 +1,4 @@
-export const Input = ({ label, type, placeholder, value, onChange }) => {
+export const Input = ({ label, type, placeholder, value, onChange, name }) => {
   return (
     <div className="flex flex-col">
       <label>{label}</label>
@@ -7,6 +7,7 @@ export const Input = ({ label, type, placeholder, value, onChange }) => {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        name={name}
       />
     </div>
   );

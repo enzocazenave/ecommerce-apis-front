@@ -2,11 +2,11 @@ import {BrowserRouter} from "react-router-dom"
 import {Layout} from "./layout/"
 import {AppRouter} from "./router/AppRouter"
 import {Provider} from "react-redux";
-import store from "./redux/Store.js";
+import Store from "./redux/Store.js";
 
 const App = () => {
     return (
-        <Provider store={store}>
+        <Provider store={Store}>
             <BrowserRouter>
                 <Layout>
                     <AppRouter/>
