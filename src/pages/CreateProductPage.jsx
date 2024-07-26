@@ -45,8 +45,8 @@ return (<section>
                 <div className="flex flex-col items-center">
                     <h1>Crear producto</h1>
                     <Input type="text" label="Nombre"  placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)}/>
-                    <Input type="text" label="Stock"  placeholder="Stock" value={stock} onChange={(e) => setStock(e.target.value)}/>
-                    <Input type="text" label="Precio"  placeholder="Precio" value={precio} onChange={(e) => setPrecio(e.target.value)}/>
+                    <Input type="number" label="Stock"  placeholder="Stock" value={stock} onChange={(e) => setStock(e.target.value)}/>
+                    <Input type="number" label="Precio"  placeholder="Precio" value={precio} onChange={(e) => setPrecio(e.target.value)}/>
                     <Input type="text" label="Descripción"  placeholder="Descripción" value={descripción} onChange={(e) => setDescripción(e.target.value)}/>
                     <Input type="text" label="Talle"  placeholder="Talle" value={talle} onChange={(e) => setconfirmarTalle(e.target.value)}/>
                     <Input type="text" label="URL"  placeholder="URL" value={uRL} onChange={(e) => setconfirmarURL(e.target.value)}/>
