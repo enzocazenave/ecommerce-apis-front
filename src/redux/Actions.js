@@ -1,4 +1,4 @@
-import {ADD_PRODUCT_TO_CART, APPLY_DISCOUNTCOUPON, REMOVE_DISCOUNTCOUPON, UPDATE_CART} from "./Action-types.js";
+import {ADD_PRODUCT_TO_CART, APPLY_DISCOUNTCOUPON, REMOVE_DISCOUNTCOUPON, UPDATE_CART, REMOVE_PRODUCT_FROM_CART} from "./Action-types.js";
 import backend from "../api/axios.js";
 
 export const applyDiscountCoupon = (couponCode) => {
@@ -44,6 +44,20 @@ export const removeDiscountCoupon = () => {
             })
         } catch (error) {
             console.error("Error quitando cupón:", error);
+            alert(error.response.data)
+        }
+    }
+}
+
+export const removeCartProductById = (productId) => {
+    return async (dispatch) => {
+        try {
+            return dispatch({
+                type: REMOVE_PRODUCT_FROM_CART,
+                payload: {productId},
+            })
+        } catch (error) {
+            console.error("Error quitando producto del carrito:", error);
             alert(error.response.data)
         }
     }
