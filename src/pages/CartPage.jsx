@@ -1,12 +1,15 @@
 import {Input, ProductOnCart} from "../components";
 import {useDispatch, useSelector} from "react-redux";
-import {applyDiscountCoupon, removeDiscountCoupon} from "../redux/Actions.js";
+import {applyDiscountCoupon, loginToCheckout, removeDiscountCoupon} from "../redux/Actions.js";
+import {useNavigate} from "react-router-dom";
 
 export const CartPage = () => {
 
     const discountCoupon = useSelector(state => state.discountCoupon);
     const cart = useSelector(state => state.cart);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const logicAccess = useSelector(state => state.logicAccess);
 
     const handlerDiscountCoupon = (event) => {
         event.preventDefault()
@@ -18,6 +21,15 @@ export const CartPage = () => {
     const cleanUpDiscountCoupon = () => {
         event.preventDefault()
         dispatch(removeDiscountCoupon())
+    }
+
+    const BuyLogic = () => {
+        if (logicAccess) {
+            navigate('/cart/checkout')
+        } else {
+            dispatch(loginToCheckout(true))
+            navigate('/login')
+        }
     }
 
     const totalPrice = cart.reduce((total, product) => total + (product.price * product.units), 0)
@@ -75,7 +87,8 @@ export const CartPage = () => {
                         )}
 
                         <button
-                            className="bg-blue-500 text-white px-3 py-2 h-fit text-sm font-medium rounded-full">Comprar
+                            className="bg-blue-500 text-white px-3 py-2 h-fit text-sm font-medium rounded-full"
+                            onClick={() => BuyLogic()}>Comprar
                             carrito
                         </button>
                     </div>

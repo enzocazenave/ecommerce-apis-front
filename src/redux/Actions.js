@@ -1,4 +1,11 @@
-import {ADD_PRODUCT_TO_CART, APPLY_DISCOUNTCOUPON, REMOVE_DISCOUNTCOUPON, UPDATE_CART, REMOVE_PRODUCT_FROM_CART} from "./Action-types.js";
+import {
+    ADD_PRODUCT_TO_CART,
+    APPLY_DISCOUNTCOUPON,
+    REMOVE_DISCOUNTCOUPON,
+    UPDATE_CART,
+    REMOVE_PRODUCT_FROM_CART,
+    LOGINTOCHECKOUT
+} from "./Action-types.js";
 import backend from "../api/axios.js";
 
 export const applyDiscountCoupon = (couponCode) => {
@@ -54,10 +61,24 @@ export const removeCartProductById = (productId) => {
         try {
             return dispatch({
                 type: REMOVE_PRODUCT_FROM_CART,
-                payload: {productId},
+                payload: productId,
             })
         } catch (error) {
             console.error("Error quitando producto del carrito:", error);
+            alert(error.response.data)
+        }
+    }
+}
+
+export const loginToCheckout = (booleanValue) => {
+    return async (dispatch) => {
+        try {
+            return dispatch({
+                type: LOGINTOCHECKOUT,
+                payload: booleanValue,
+            })
+        } catch (error) {
+            console.error("Error configurando redirect del login:", error);
             alert(error.response.data)
         }
     }

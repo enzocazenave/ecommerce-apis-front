@@ -4,14 +4,15 @@ import {
     REMOVE_DISCOUNTCOUPON,
     LOG_IN,
     LOG_OUT,
-    UPDATE_CART, REMOVE_PRODUCT_FROM_CART
+    UPDATE_CART, REMOVE_PRODUCT_FROM_CART, LOGINTOCHECKOUT
 } from "./Action-types.js";
 
 const initialState = {
     cart: [],
     discountCoupon: {},
     products: [],
-    access: false
+    logicAccess: false,
+    loginToCheckout: false
 }
 
 export const rootReducer = (state = initialState, action) => {
@@ -30,13 +31,13 @@ export const rootReducer = (state = initialState, action) => {
             const productInCartIndex = [...state.cart].findIndex(product => product.id === action.payload.id)
 
             if (productInCartIndex !== -1) {
-                const updatedCart = [...state.cart];
+                const updatedCart = [...state.cart]
                 updatedCart[productInCartIndex] = {
                     ...updatedCart[productInCartIndex],
                     units: action.payload.units
-                };
+                }
 
-                return {...state, cart: updatedCart};
+                return {...state, cart: updatedCart}
             }
 
             return {
@@ -64,20 +65,16 @@ export const rootReducer = (state = initialState, action) => {
                 cart: [...state.cart, action.payload]
             }
         case REMOVE_PRODUCT_FROM_CART:
-
-            const updatedCart = [...state.cart];
-            console.log("Carrito antes de la eliminación:", updatedCart);
-            console.log("payload: ", action.payload)
-
-            const productIndex = updatedCart.findIndex(cartProduct => cartProduct.id === action.payload.productId);
+            const updatedCart = [...state.cart]
+            const productIndex = updatedCart.findIndex(cartProduct => cartProduct.id === action.payload)
 
             if (productIndex !== -1) {
-                updatedCart.splice(productIndex, 1);
-                console.log("Carrito después de la eliminación:", updatedCart);
+                updatedCart.splice(productIndex, 1)
             }
 
-            return { ...state, cart: updatedCart };
-
+            return { ...state, cart: updatedCart }
+        case LOGINTOCHECKOUT:
+            return {...state, loginToCheckout: action.payload}
         default:
             return state
     }
