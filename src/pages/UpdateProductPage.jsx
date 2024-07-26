@@ -32,8 +32,10 @@ export const  UpdateProductPage = () => {
   const deleteProduct = async(productId) => {
     var result = confirm("Seguro que queres eliminar el producto?");
       if (result) {
-        await backend.delete(`/products/images/${productId}/all`)
+        await backend.delete(`/products/images/${productId}/alls`)
         await backend.delete(`/products/${productId}`)
+
+        setProductOptions(prev => prev.filter(product => product.id !== productId))
       }
   };
 
