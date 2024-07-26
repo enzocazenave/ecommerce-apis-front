@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useDispatch} from "react-redux";
-import { updateCart} from "../redux/Actions.js";
+import {removeCartProductById, updateCart} from "../redux/Actions.js";
 
 
 export const ProductOnCart = ({product}) => {
@@ -18,8 +18,9 @@ export const ProductOnCart = ({product}) => {
         dispatch(updateCart(updatedProduct));
     };
 
-    const removeProduct = () => {
-
+    const removeProductOnCart = (productId) => {
+        console.log(productId)
+        dispatch(removeCartProductById(productId));
     }
 
     return (
@@ -52,7 +53,7 @@ export const ProductOnCart = ({product}) => {
                     <input type="number" value={product.units} min={1} max={product.stock} onChange={() => updateUnits(parseInt(event.target.value))}/>
                 </div>
                 <div>
-                    <button className="bg-blue-500 text-white px-2 py-1 h-fit text-xs font-medium rounded-full" onClick={removeProduct(product)}>Quitar de carrito </button>
+                    <button className="bg-blue-500 text-white px-2 py-1 h-fit text-xs font-medium rounded-full" onClick={() => removeProductOnCart(product.id)}>Quitar de carrito </button>
                 </div>
             </div>
         </li>

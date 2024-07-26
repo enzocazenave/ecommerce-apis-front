@@ -4,7 +4,7 @@ import {
     REMOVE_DISCOUNTCOUPON,
     LOG_IN,
     LOG_OUT,
-    UPDATE_CART
+    UPDATE_CART, REMOVE_PRODUCT_FROM_CART
 } from "./Action-types.js";
 
 const initialState = {
@@ -24,7 +24,8 @@ export const rootReducer = (state = initialState, action) => {
         case REMOVE_DISCOUNTCOUPON:
             return {
                 ...state,
-                discountCoupon: {}}
+                discountCoupon: {}
+            }
         case UPDATE_CART:
             const productInCartIndex = [...state.cart].findIndex(product => product.id === action.payload.id)
 
@@ -35,7 +36,7 @@ export const rootReducer = (state = initialState, action) => {
                     units: action.payload.units
                 };
 
-                return { ...state, cart: updatedCart };
+                return {...state, cart: updatedCart};
             }
 
             return {
@@ -62,6 +63,21 @@ export const rootReducer = (state = initialState, action) => {
                 ...currentCart,
                 cart: [...state.cart, action.payload]
             }
+        case REMOVE_PRODUCT_FROM_CART:
+
+            const updatedCart = [...state.cart];
+            console.log("Carrito antes de la eliminación:", updatedCart);
+            console.log("payload: ", action.payload)
+
+            const productIndex = updatedCart.findIndex(cartProduct => cartProduct.id === action.payload.productId);
+
+            if (productIndex !== -1) {
+                updatedCart.splice(productIndex, 1);
+                console.log("Carrito después de la eliminación:", updatedCart);
+            }
+
+            return { ...state, cart: updatedCart };
+
         default:
             return state
     }
