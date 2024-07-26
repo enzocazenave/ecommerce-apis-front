@@ -1,5 +1,5 @@
 import { Input } from "../components/Input.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import backend from "../api/axios";
 
 export const CreateProductPage = () => {
@@ -11,17 +11,79 @@ export const CreateProductPage = () => {
   const [uRL, setconfirmarURL] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [tallesDisponibles, setTallesDisponibles] = useState([]);
-  const options = [
-    { value: 0, label: "Selecciona una Categoria", disabled: true },
-    { value: 1, label: "Remeras" },
-    { value: 2, label: "Pantalones" },
-    { value: 3, label: "Buzos" },
-  ];
+  const [categoryOptions, setCategoryOptions] = useState([])
+  const [images, setImages] = useState([])
+  const [talleSeleccionado, setTalleSeleccionado] = useState(0)
+
   const [data, setData] = useState([
     
   ]);
   
+  //Conexiones a la db
+
+  useEffect(() => {
+    backend.get("/categories")
+      .then((response) => {
+        const categories = response.data.map((category, index) => ({
+          value: index + 1,
+          label: category.name,
+        }))
+
+        setCategoryOptions([
+          { value: 0, label: "Selecciona una categoria", disabled: true },
+          ...categories
+        ])
+      })
+  }, [])
+
+  const handleAddImage = () => {
+    setImages(prev => [
+      ...prev,
+      uRL
+    ])
+    setconfirmarURL("")
+  }
+  
+  const handleDeleteImage = (index) => {
+    const newData = images.filter((_, imageIndex) => imageIndex !== index);
+    setImages(newData);
+  }
+  
   // funciones
+  const creactProduct = async () => {
+    const promises = []
+
+    data.forEach((product) => {
+      const promise = backend.post("/products", {
+        name: product.Nombre,
+        description: product.Descripcion,
+        idCategory: 1,
+        price: 100,
+        stock: parseInt(product.Stock),
+        size: product.Talle
+      })
+
+      promises.push(promise)
+    })
+
+    await Promise.all(promises)
+      .then(async (results) => {
+        const imagePromises = []
+
+        results.forEach(result => {
+          const responseResult = result.data
+          images.forEach(image => {
+            const promise = backend.post(`/products/images/${responseResult.id}`, {
+              urlImage: image
+            })
+            imagePromises.push(promise)
+          })
+        })
+
+        await Promise.all(imagePromises)
+      })
+  }
+
   // Validaciones
   const validateNombre = (nombre) => {
     if (nombre.trim() === "") {
@@ -77,14 +139,12 @@ export const CreateProductPage = () => {
       return;
     }
 
-    console.log(options.find((option) => option.value === selectedCategory));
     const newProduct = {
       Nombre: nombre,
       Descripcion: descripcion,
-      caterogia: options.find((option) => option.value === selectedCategory)
+      caterogia: categoryOptions.find((option) => option.value === selectedCategory)
         .label,
-      URL: uRL,
-      Talle: "",
+      Talle: talleSeleccionado,
       Stock: parseInt(stock, 10),
     };
     setData([...data, newProduct]);
@@ -119,19 +179,30 @@ export const CreateProductPage = () => {
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
           />
-          <Input
-            type="text"
-            label="URL"
-            placeholder="URL"
-            value={uRL}
-            onChange={(e) => setconfirmarURL(e.target.value)}
-          />
+          <div className="flex gap-2">
+            <Input
+              type="text"
+              label="URL"
+              placeholder="URL"
+              value={uRL}
+              onChange={(e) => setconfirmarURL(e.target.value)}
+            />
+            <button onClick={handleAddImage}>
+              +
+            </button>
+          </div>
+          { images.map((image, index) => (
+            <div key={index} className="flex gap-2"> 
+              <span>{image}</span>
+              <button onClick={() => handleDeleteImage(index)}>Eliminar</button>
+            </div>
+          )) }
           <select
             className="px-2 py-1 mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
             value={selectedCategory}
             onChange={handleChange}
           >
-            {options.map((option, index) => (
+            {categoryOptions.map((option, index) => (
               <option
                 key={index}
                 value={option.value}
@@ -142,7 +213,7 @@ export const CreateProductPage = () => {
             ))}
           </select>
           {selectedCategory !== 0 ? (
-            <select onChange={(e) => {}}>
+            <select onChange={(e) => { setTalleSeleccionado(e.target.value) }}>
               {tallesDisponibles.map((talle, index) => (
                 <option key={index} value={talle}>
                   {talle}
@@ -202,9 +273,6 @@ export const CreateProductPage = () => {
                   {product.caterogia}
                 </td>
                 <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  {product.URL}
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                   {product.Talle}
                 </td>
                 <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
@@ -223,7 +291,7 @@ export const CreateProductPage = () => {
             ))}
           </tbody>
         <button className="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative"
-                onClick={null}
+                onClick={creactProduct}
                   >
                   Cargar Productos
                   </button>
