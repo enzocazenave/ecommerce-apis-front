@@ -1,8 +1,9 @@
 import { Input } from "../components/Input.jsx";
 import { useState } from "react";
+import backend from "../api/axios";
 
 export const CreateProductPage = () => {
-  //Variables
+  //Variables http://127.0.0.1:3000/products
   const [nombre, setNombre] = useState("");
   const [stock, setStock] = useState("");
   const [precio, setPrecio] = useState("");
@@ -19,7 +20,8 @@ export const CreateProductPage = () => {
   const [data, setData] = useState([
     
   ]);
-
+  
+  // funciones
   // Validaciones
   const validateNombre = (nombre) => {
     if (nombre.trim() === "") {
@@ -30,13 +32,12 @@ export const CreateProductPage = () => {
   };
 
   const validateStock = (stock) => {
-    if (isNaN(stock) || parseInt(stock, 10) <= 0) {
+    if (stock.trim() === ""|| isNaN(stock) || parseInt(stock, 10) <= 0) {
       return "El stock debe ser un número positivo.";
     }
     return null; // Return null if validation passes
   };
 
-  //funciones
   const deleteProduct = (productId) => {
     console.log(productId)
     const newData = data.filter((_, index) => index !== productId);
@@ -106,13 +107,6 @@ export const CreateProductPage = () => {
           />
           <Input
             type="number"
-            label="Stock"
-            placeholder="Stock"
-            value={stock}
-            onChange={(e) => setStock(e.target.value)}
-          />
-          <Input
-            type="number"
             label="Precio"
             placeholder="Precio"
             value={precio}
@@ -156,6 +150,13 @@ export const CreateProductPage = () => {
               ))}
             </select>
           ) : null}
+          <Input
+            type="number"
+            label="Stock"
+            placeholder="Stock"
+            value={stock}
+            onChange={(e) => setStock(e.target.value)}
+          />
           <button className="border" onClick={handleAddProduct}>
             Agregar
           </button>
@@ -221,6 +222,11 @@ export const CreateProductPage = () => {
               </tr>
             ))}
           </tbody>
+        <button className="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative"
+                onClick={null}
+                  >
+                  Cargar Productos
+                  </button>
         </table>
       </div>
     </section>

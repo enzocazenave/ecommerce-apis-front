@@ -27,14 +27,9 @@ export const CartPage = () => {
     const discountCoupon = useSelector(state => state.discountCoupon);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (discountCoupon?.code) {
-            console.log(discountCoupon);
-            dispatch(applyDiscountCoupon(discountCoupon.code))
-        }
-    }, [dispatch]);
-
+    console.log(discountCoupon)
     const handlerDiscountCoupon = (event) => {
+
         event.preventDefault()
         const formData = new FormData(event.target)
         const form = Object.fromEntries(formData.entries())
@@ -42,6 +37,7 @@ export const CartPage = () => {
         dispatch(applyDiscountCoupon(form.DiscountValue))
     }
 
+    const totalPrice = productsOnCart.reduce((total, product) => total + product.price, 0)
     return (
         <section>
             <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
@@ -67,7 +63,8 @@ export const CartPage = () => {
                         <button>Aplicar descuento</button>
                     </form>
                     <div className="flex justify-between mt-10">
-                        <p>Total: ${productsOnCart.reduce((total, product) => total + product.price, 0)}</p>
+                        <p>Total: ${totalPrice}</p>
+                        {discountCoupon  && discountCoupon.percentage  ? (<p>${totalPrice * discountCoupon.percentage / 100}</p>) : (<p></p>)}
                         <button>Comprar carrito</button>
                     </div>
                 </div>

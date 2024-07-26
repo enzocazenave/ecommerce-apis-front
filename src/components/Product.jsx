@@ -18,9 +18,6 @@ export const Product = ({ product }) => {
             <span>$ {product.price}</span>
           </p>
         </div>
-        <button className="bg-blue-500 text-white px-3 py-2 h-fit text-sm font-medium rounded-full">
-          + Carrito
-        </button>
       </div>
     </li>
   );
