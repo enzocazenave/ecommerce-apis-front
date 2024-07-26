@@ -14,7 +14,6 @@ export const applyDiscountCoupon = (couponCode) => {
             })
         } catch (error) {
             console.error("Error aplicando cupón:", error);
-
             alert(error.response.data)
         }
     }

@@ -43,7 +43,9 @@ export const CartPage = () => {
             <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
                 <div className="mx-auto max-w-3xl">
                     <header>
-                        <h1>Tu Carrito</h1>
+                        <h1 className="text-xl font-bold text-gray-900 sm:text-3xl">
+                            Tu Carrito
+                        </h1>
                     </header>
 
                     <div className="mt-8">
@@ -54,18 +56,35 @@ export const CartPage = () => {
                         </ul>
                     </div>
 
-                    <h2>Datos de descuento</h2>
+                    <h2 className="text-lg font-bold text-gray-700">
+                        Datos de descuento
+                    </h2>
 
-                    <form onSubmit={handlerDiscountCoupon}>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Input label="Codigo de descuento" type="text" placeholder={discountCoupon.code} name="DiscountValue"/>
+                    <form onSubmit={handlerDiscountCoupon} className="flex items-center space-x-4">
+                        <div className="flex gap-4 items-end">
+                            <Input label="Código de descuento" type="text" placeholder={discountCoupon.code}
+                                   name="DiscountValue" disabled={discountCoupon && discountCoupon.percentage}/>
+                            <button
+                                className="bg-blue-500 text-white px-2 py-1 h-fit text-xs font-medium rounded-full" disabled={discountCoupon && discountCoupon.percentage}>Aplicar
+                                descuento
+                            </button>
                         </div>
-                        <button>Aplicar descuento</button>
                     </form>
+
                     <div className="flex justify-between mt-10">
-                        <p>Total: ${totalPrice}</p>
-                        {discountCoupon  && discountCoupon.percentage  ? (<p>${totalPrice * discountCoupon.percentage / 100}</p>) : (<p></p>)}
-                        <button>Comprar carrito</button>
+                        {discountCoupon && discountCoupon.percentage ? (
+                            <div>
+                                <p className="line-through">Total: ${totalPrice}</p>
+                                <p>Total con descuento: ${totalPrice - (totalPrice * discountCoupon.percentage / 100)}</p>
+                            </div>
+                        ) : (
+                            <p>Total: ${totalPrice}</p>
+                        )}
+
+                        <button
+                            className="bg-blue-500 text-white px-3 py-2 h-fit text-sm font-medium rounded-full">Comprar
+                            carrito
+                        </button>
                     </div>
                 </div>
             </div>
