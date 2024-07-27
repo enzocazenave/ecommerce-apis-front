@@ -1,6 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {overrideCart, updateIsLogged, updateLoginToCheckout} from "../redux/Actions.js";
+import toast from "react-hot-toast";
 
 export const Navbar = () => {
     const isLogged = useSelector(state => state.isLogged)
@@ -14,6 +15,7 @@ export const Navbar = () => {
         dispatch(updateLoginToCheckout(false))
         dispatch(overrideCart([]))
         dispatch(updateUser({}))
+        toast.success("Adiós, "+user.name);
         navigate('/')
     }
 
@@ -79,7 +81,7 @@ export const Navbar = () => {
                                     </Link>
                                 </>) : (<Link
                                 className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
-                                onClick={() => handleLogout()} to="/">
+                                onClick={() => handleLogout()}>
                                 Cerrar sesión
                             </Link>)
                             }

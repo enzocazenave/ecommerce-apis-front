@@ -5,12 +5,14 @@ import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {updateIsLogged, updateUser} from "../redux/Actions.js";
 import {Link} from "react-router-dom";
+import toast from "react-hot-toast";
 
 export const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
     const loginToCheckout = useSelector((state) => state.loginToCheckout);
+    const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -26,6 +28,7 @@ export const LoginPage = () => {
                 } else {
                     navigate("/");
                 }
+                toast.success("Bienvenidos, "+response.data.name);
             }
         } catch (error) {
             if (error.response.status === 401) {
