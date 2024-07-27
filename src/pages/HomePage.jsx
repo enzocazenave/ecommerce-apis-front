@@ -1,6 +1,7 @@
 import {ProductList} from "../components";
 import backend from "../api/axios.js";
 import {useEffect, useState} from "react";
+import { productResponseFormatter } from "../helpers/productResponseFormatter.js";
 
 export const HomePage = () => {
     const [productsFirstCategory, setProductsFirstCategory] = useState([])
@@ -17,12 +18,7 @@ export const HomePage = () => {
                 if (categoriesData.length > 0) {
                     backend.get(`/products/categories/${categoriesData[0]?.id}`)
                         .then(response => {
-                            const productsData = response.data.map(product => ({
-                                id: product.id,
-                                name: product.name,
-                                price: product.price,
-                                image: product.images[0]?.urlImage || 'https://via.placeholder.com/150' // Usar una imagen por defecto si no hay imagen
-                            }));
+                            const productsData = productResponseFormatter(response.data, true);
                             setProductsFirstCategory(productsData);
                         })
                         .catch(error => console.error("Error fetching first category products:", error));
@@ -31,12 +27,7 @@ export const HomePage = () => {
                 if (categoriesData.length > 1) {
                     backend.get(`/products/categories/${categoriesData[1]?.id}`)
                         .then(response => {
-                            const productsData = response.data.map(product => ({
-                                id: product.id,
-                                name: product.name,
-                                price: product.price,
-                                image: product.images[0]?.urlImage || 'https://via.placeholder.com/150' // Usar una imagen por defecto si no hay imagen
-                            }));
+                            const productsData = productResponseFormatter(response.data, true);
                             setProductsSecondCategory(productsData);
                         })
                         .catch(error => console.error("Error fetching second category products:", error));
