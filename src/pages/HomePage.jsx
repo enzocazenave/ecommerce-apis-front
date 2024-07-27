@@ -1,46 +1,67 @@
 import {ProductList} from "../components";
-
-const products = [
-    {
-        id: 1,
-        name: "Remera Básica",
-        price: 16250,
-        image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
-    },
-    {
-        id: 2,
-        name: "Remera Básica",
-        price: 16250,
-        image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
-    },
-    {
-        id: 3,
-        name: "Remera Básica",
-        price: 16250,
-        image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
-    },
-    {
-        id: 4,
-        name: "Remera Básica",
-        price: 16250,
-        image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
-    },
-];
+import backend from "../api/axios.js";
+import {useEffect, useState} from "react";
 
 export const HomePage = () => {
+    const [productsFirstCategory, setProductsFirstCategory] = useState([])
+    const [productsSecondCategory, setProductsSecondCategory] = useState([])
+
+    const [categories, setCategories] = useState([])
+
+    useEffect(() => {
+        backend.get('/categories')
+            .then(response => {
+                const categoriesData = response.data;
+                setCategories(categoriesData);
+
+                if (categoriesData.length > 0) {
+                    backend.get(`/products/categories/${categoriesData[0]?.id}`)
+                        .then(response => {
+                            const productsData = response.data.map(product => ({
+                                id: product.id,
+                                name: product.name,
+                                price: product.price,
+                                image: product.images[0]?.urlImage || 'https://via.placeholder.com/150' // Usar una imagen por defecto si no hay imagen
+                            }));
+                            setProductsFirstCategory(productsData);
+                        })
+                        .catch(error => console.error("Error fetching first category products:", error));
+                }
+
+                if (categoriesData.length > 1) {
+                    backend.get(`/products/categories/${categoriesData[1]?.id}`)
+                        .then(response => {
+                            const productsData = response.data.map(product => ({
+                                id: product.id,
+                                name: product.name,
+                                price: product.price,
+                                image: product.images[0]?.urlImage || 'https://via.placeholder.com/150' // Usar una imagen por defecto si no hay imagen
+                            }));
+                            setProductsSecondCategory(productsData);
+                        })
+                        .catch(error => console.error("Error fetching second category products:", error));
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching categories:", error);
+            });
+    }, []);
+
+
     return (
         <section className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-            <ProductList
-                products={products}
-                title="Remeras"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, illo! Facilis quia eius dignissimos, recusandae nostrum sit quisquam enim molestiae culpa, alias error non omnis, dolore repellat esse quidem. Eius."
-            />
+            {categories.length > 0 && (
+                <ProductList
+                    products={productsFirstCategory}
+                    title={categories[0].name}
+                />
+            )}
 
-            <ProductList
-                products={products}
-                title="Camperas"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, illo! Facilis quia eius dignissimos, recusandae nostrum sit quisquam enim molestiae culpa, alias error non omnis, dolore repellat esse quidem. Eius."
-            />
+            {categories.length > 1 && (
+                <ProductList
+                    products={productsSecondCategory}
+                    title={categories[1].name}
+                />)}
 
         </section>
     );
