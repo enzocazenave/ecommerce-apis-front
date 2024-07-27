@@ -7,15 +7,15 @@ import {updateIsLogged} from "../redux/Actions.js";
 import {Link} from "react-router-dom";
 
 export const LoginPage = () => {
-
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
     const loginToCheckout = useSelector((state) => state.loginToCheckout);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const fetchLogin = async () => {
+    const fetchLogin = async (e) => {
+      e.preventDefault()
         try {
             const response = await backend.post("/users/login", {email, password});
             if (response.status === 200) {
@@ -48,11 +48,11 @@ export const LoginPage = () => {
                     </p>
                 </div>
 
-                <form action="#" className="mx-auto mb-0 mt-8 max-w-md space-y-4">
-                    <div>
-                        <label htmlFor="email" className="sr-only">
-                            Email
-                        </label>
+        <form onSubmit={fetchLogin} className="mx-auto mb-0 mt-8 max-w-md space-y-4">
+          <div>
+            <label htmlFor="email" className="sr-only">
+              Email
+            </label>
 
                         <div className="relative">
                             <input
