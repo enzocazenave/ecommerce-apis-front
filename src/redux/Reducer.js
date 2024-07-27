@@ -17,6 +17,11 @@ const initialState = {
 export const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case APPLY_DISCOUNTCOUPON:
+            console.log(action.payload.availableQuantity)
+            if (action.payload.availableQuantity <= 0) {
+                toast.error("El cupón ya no está disponble.")
+                return { ...state }
+            }
             return {
                 ...state,
                 discountCoupon: action.payload,
