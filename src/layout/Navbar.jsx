@@ -14,7 +14,7 @@ export const Navbar = () => {
         dispatch(updateIsLogged(false))
         dispatch(updateLoginToCheckout(false))
         dispatch(overrideCart([]))
-        toast.success("Adión, "+ user.name)
+        toast.success("Adiós, "+ user.name)
         dispatch(updateUser({}))
         navigate('/')
     }
