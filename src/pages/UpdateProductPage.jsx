@@ -6,13 +6,28 @@ import { useParams } from "react-router-dom";
 export const  UpdateProductPage = () => {
   const { name } = useParams()
   const [stock, setStock] = useState("");
-  const [precio, setPrecio] = useState("");
+  const [nameProduct, setName] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [uRL, setconfirmarURL] = useState("");
   const [ProductOptions, setProductOptions] = useState([])
   const [images, setImages] = useState([])
-  
-  
+  const [categoryOptions, setCategoryOptions] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState(0);
+  useEffect(() => {
+    backend.get("/categories")
+      .then((response) => {
+        const categories = response.data.map((category, index) => ({
+          value: index + 1,
+          label: category.name,
+        }))
+
+        setCategoryOptions([
+          { value: 0, label: "Selecciona una categoria", disabled: true },
+          ...categories
+        ])
+      })
+  }, [])
+
   useEffect(() => {
     backend.get(`/products/${name}/matching_sizes_by_name`)
       .then(async(response) => {
@@ -29,6 +44,18 @@ export const  UpdateProductPage = () => {
       })
   }, [])
 
+  const handleChange = (event) => {
+    setSelectedCategory(parseInt(event.target.value));
+  };
+
+  const handleAddImage = () => {
+    setImages(prev => [
+      ...prev,
+      uRL
+    ])
+    setconfirmarURL("")
+  }
+
   const deleteProduct = async(productId) => {
     var result = confirm("Seguro que queres eliminar el producto?");
       if (result) {
@@ -38,7 +65,6 @@ export const  UpdateProductPage = () => {
         setProductOptions(prev => prev.filter(product => product.id !== productId))
       }
   };
-
   
   const updateProduct = (productId) => {
     console.log(productId);
@@ -50,35 +76,61 @@ export const  UpdateProductPage = () => {
       console.log(productId);
     }
   };
-  
-  const handleAddImage = () => {
-    setImages(prev => [
-      ...prev,
-      uRL
-    ])
-    setconfirmarURL("")
-  }
-
-  const handleDeleteImage = (index) => {
-    const newData = images.filter((_, imageIndex) => imageIndex !== index);
-    setImages(newData);
-  }
-
   return (
     <section>
+    <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <div className="flex flex-col items-center">
+         <Input
+            type="text"
+            label="Nombre"
+            placeholder="Nombre"//{ProductOptions[0].name}
+            value={nameProduct}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Input
+            type="text"
+            label="Descripcion"
+            placeholder="Descripcion"//{ProductOptions[0].description}
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
+          />
+          <select
+            className="px-2 py-1 mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
+            value={selectedCategory}
+            onChange={handleChange}
+          >
+            {categoryOptions.map((option, index) => (
+              <option
+                key={index}
+                value={option.value}
+                disabled={option.disabled}
+              >
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <div className="flex gap-2">
+            <Input
+              type="text"
+              label="URL"
+              placeholder="URL"
+              value={uRL}
+              onChange={(e) => setconfirmarURL(e.target.value)}
+            />
+            <button onClick={handleAddImage}>
+              +
+            </button>
+          </div> 
+         <button className="border" onClick={handleUpdateProduct}>
+            Actualizar Producto
+          </button> 
+        </div>
+      </div>
+    -------------------------------
     <div className="overflow-x-auto">
     <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
       <thead className="ltr:text-left rtl:text-right">
         <tr>
-          <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-            Nombre
-          </th>
-          <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-            Descripcion
-          </th>
-          <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-            caterogia
-          </th>
           <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
             Talle
           </th>
@@ -90,15 +142,6 @@ export const  UpdateProductPage = () => {
       <tbody className="divide-y divide-gray-200">
         {ProductOptions.map((product,index) => (
           <tr key={index}>
-            <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-              {product.name}
-            </td>
-            <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-              {product.description}
-            </td>
-            <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-              {product.category.name}
-            </td>
             <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
               {product.size}
             </td>
@@ -128,57 +171,6 @@ export const  UpdateProductPage = () => {
       </tbody>
     </table>
     </div>
-    <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        <div className="flex flex-col items-center">
-          <Input
-            type="number"
-            label="Precio"
-            placeholder="Precio"
-            value={precio}
-            onChange={(e) => setPrecio(e.target.value)}
-          />
-          <Input
-            type="text"
-            label="Descripcion"
-            placeholder="Descripcion"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-          />
-          <div className="flex gap-2">
-            <Input
-              type="text"
-              label="URL"
-              placeholder="URL"
-              value={uRL}
-              onChange={(e) => setconfirmarURL(e.target.value)}
-            />
-            <button onClick={handleAddImage}>
-              +
-            </button>
-          </div>
-          {/* images.map((image, index) => (
-            <div key={index} className="flex gap-2"> 
-              <span>{image}</span>
-              <button onClick={() => handleDeleteImage(index)}>Eliminar</button>
-            </div>
-          )) */}
-          <Input
-            type="number"
-            label="Stock"
-            placeholder="Stock"
-            value={stock}
-            onChange={(e) => setStock(e.target.value)}
-          />
-          <button className="border" onClick={handleUpdateProduct}>
-            Actaulizar Producto
-          </button>
-        </div>
-      </div>
-
-
-
-
-
     </section>
   );
   };
