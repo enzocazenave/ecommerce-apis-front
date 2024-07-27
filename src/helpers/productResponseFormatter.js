@@ -15,7 +15,7 @@ export const productResponseFormatter = (productsResponse, isSearchById = false)
         name: product.name,
         price: product.price,
         description: product.description,
-        image: product?.images[0]?.urlImage ?? "",
+        image: product?.images ?? [],
         sizes: [
           { id: product.id, size: product.size, stock: product.stock },
         ]

@@ -26,7 +26,7 @@ export const ProductPage = () => {
       id: size.id,
       name: currentProduct.name, 
       price: currentProduct.price, 
-      image: currentProduct.image, 
+      image: currentProduct.image[0].urlImage, 
       description: currentProduct.description, 
       size: size.size, 
       stock: size.stock,
@@ -113,12 +113,17 @@ export const ProductPage = () => {
         </nav>
 
         <div className="flex gap-6">
-          <img
-            src={currentProduct?.image}
-            alt=""
-            className="flex-1 object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-          />
-
+          <div>
+            {currentProduct?.image?.map((image) => (
+              <img
+                key={image.id}
+                src={image.urlImage}
+                alt=""
+                className="h-[350px] w-full object-cover sm:h-[450px] rounded-md hover:opacity-90 transition-opacity"
+              />
+            ))}
+          </div>
+          
           <div className="flex-1 flex flex-col gap-4">
             <header>
               <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">
