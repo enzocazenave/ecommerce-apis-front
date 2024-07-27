@@ -16,7 +16,7 @@ export const useProducts = ({ id }) => {
 
     backend.get(url)
       .then((response) => {
-        setProducts(productResponseFormatter(response.data, !!id))
+        setProducts(productResponseFormatter(response.data, true))
       }).catch((error) => {
         console.log(error)
       })
