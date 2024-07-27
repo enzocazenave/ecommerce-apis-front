@@ -62,14 +62,21 @@ export const CartPage = () => {
                                    name="DiscountValue" disabled={discountCoupon && discountCoupon.percentage}/>
 
                             {discountCoupon && discountCoupon.code ? (
-                                <button
-                                    className="bg-blue-500 text-white px-2 py-1 h-fit text-xs font-medium rounded-full"
-                                    onClick={cleanUpDiscountCoupon}>Quitar cupón </button>
+                                <>
+                                    <button
+                                        className="bg-blue-500 text-white px-2 py-1 h-fit text-xs font-medium rounded-full"
+                                        onClick={cleanUpDiscountCoupon}>Quitar cupón
+                                    </button>
+                                    <p>
+                                        -{discountCoupon.percentage}%
+                                    </p>
+                                </>
                             ) : (
                                 <button
                                     className="bg-blue-500 text-white px-2 py-1 h-fit text-xs font-medium rounded-full">Aplicar
                                     descuento
                                 </button>
+
                             )}
 
                         </div>

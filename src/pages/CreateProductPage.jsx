@@ -248,6 +248,7 @@ export const CreateProductPage = () => {
             type="number"
             label="Stock"
             placeholder="Stock"
+            min={0}
             value={stock}
             onChange={(e) => setStock(e.target.value)}
           />
