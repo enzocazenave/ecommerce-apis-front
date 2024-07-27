@@ -6,11 +6,11 @@ import {useState} from "react";
 import {updateIsLogged} from "../redux/Actions.js";
 
 export const LoginPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
-    const loginToCheckout = useSelector(state => state.loginToCheckout);
-    const dispatch = useDispatch();
+    const loginToCheckout = useSelector(state => state.loginToCheckout)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const fetchLogin = async () => {
@@ -30,7 +30,7 @@ export const LoginPage = () => {
         } catch (error) {
             console.log(error)
         }
-    };
+    }
 
     return (
         <section>
