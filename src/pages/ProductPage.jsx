@@ -127,11 +127,19 @@ export const ProductPage = () => {
           <div className="flex-1 flex flex-col gap-4">
             <header>
               <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">
-                {currentProduct?.name} {size?.stock === 0 ? <b className="text-red-600">(Agotado)</b> : ""}
+                {currentProduct?.name} {
+                size?.stock === 0 
+                ? <b className="text-red-600">(Agotado)</b> 
+                : null
+                }
               </h2>
 
               <p className="mt-4 text-gray-500">
                 {currentProduct?.description}
+              </p>
+
+              <p className="mt-4">
+                <b>{ size?.stock } Unidades disponibles</b>
               </p>
             </header>
 

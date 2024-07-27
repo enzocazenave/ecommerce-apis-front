@@ -7,6 +7,18 @@ export const ProductOnCart = ({ product }) => {
   const dispatch = useDispatch();
 
   const updateUnits = (newUnits) => {
+    if (newUnits < 1) {
+      setUnitOnCart(1)
+      const updatedProduct = {
+        ...product,
+        units: newUnits,
+      };
+  
+      dispatch(updateCart(updatedProduct));
+      return
+    }
+    
+
     setUnitOnCart(newUnits);
 
     const updatedProduct = {
@@ -42,7 +54,7 @@ export const ProductOnCart = ({ product }) => {
             </div>
 
             <div>
-              <p>Color {product.description}</p>
+              <p>Stock {product.stock}</p>
             </div>
             <div className="flex flex-1 items-center justify-end gap-2">
               <input
