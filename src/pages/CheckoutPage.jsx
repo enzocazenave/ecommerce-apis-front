@@ -1,13 +1,15 @@
 import { ProductOnCartOut } from "../components/ProductOnCartOut";
 import { Input } from "../components";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import backend from "../api/axios";
+import {overrideCart} from "../redux/Actions.js";
 
 export const CheckoutPage = () => {
   const discountCoupon = useSelector((state) => state.discountCoupon);
   const cart = useSelector((state) => state.cart);
   const totalPrice = cart.reduce((total, product) => total + product.price * product.units, 0);
   const totalDiscount = totalPrice - (totalPrice * discountCoupon?.percentage) / 100;
+  const dispatch = useDispatch()
 
   const handleConfirmOrder = async () => {
     const data = {
@@ -27,6 +29,8 @@ export const CheckoutPage = () => {
     backend.post("/purchase_orders", data).then((response) => {
         console.log(response)
     });
+
+    dispatch(overrideCart([]))
   };
 
   return (

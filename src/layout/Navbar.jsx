@@ -9,14 +9,10 @@ export const Navbar = () => {
     const dispatch = useDispatch()
 
     const handleLogout = () => {
-        console.log("isLogged", isLogged)
-        console.log("loginToCheckout", loginToCheckout)
         dispatch(updateIsLogged(false))
         dispatch(updateLoginToCheckout(false))
         dispatch(overrideCart([]))
         navigate('/')
-        console.log("isLogged", isLogged)
-        console.log("loginToCheckout", loginToCheckout)
     }
 
     return (
