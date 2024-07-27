@@ -10,7 +10,7 @@ export const Input = ({
   return (
     <div>
       <label
-        className="block text-xs font-medium text-gray-700 ps-"
+        className="block text-xs font-medium text-gray-700 ps-2"
       >
         {label}
       </label>
@@ -23,7 +23,7 @@ export const Input = ({
         type={type}
         placeholder={placeholder}
         disabled={disabled}
-        className={`mt-1 px-2 py-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm ${disabled ? "bg-gray-200 text-gray-500" : ""}`}
+        className={`px-2 py-1 mt-1.5 w-full rounded-lg border border-gray-100 text-gray-700 sm:text-sm shadow-sm ${disabled ? "bg-gray-200 text-gray-500" : ""}`}
       />
     </div>
   );

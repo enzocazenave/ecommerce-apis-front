@@ -22,7 +22,7 @@ export const ProductPage = () => {
 
   const handleAddProductToCart = () => {
     dispatch(addProductToCart({ 
-      id: size.id, 
+      id: size.id,
       name: currentProduct.name, 
       price: currentProduct.price, 
       image: currentProduct.image, 
