@@ -29,11 +29,16 @@ export const OrderPage = () => {
 
                 const formattedProducts = purchasedProducts.map((purchasedProduct, index) => {
                     const {productDetails, productImage} = productDetailsResults[index]
+                    console.log(purchasedProduct)
 
+                    let price = purchasedProduct?.price
+                    if (purchasedProduct.purchaseOrder?.discountCoupon?.percentage) {
+                        price = purchasedProduct?.price * (100 - purchasedProduct.purchaseOrder?.discountCoupon?.percentage) / 100
+                    }
                     return {
                         id: productDetails.id,
                         name: productDetails.name,
-                        price: purchasedProduct?.price * (100-purchasedProduct.purchaseOrder?.discountCoupon?.percentage)/100,
+                        price: price,
                         size: productDetails.size,
                         description: productDetails.description,
                         units: purchasedProduct.unit,
@@ -67,7 +72,8 @@ export const OrderPage = () => {
                     </div>
 
                     <div className="flex justify-between mt-10">
-                        <p>Total: ${productByOrder.reduce((total, product) => total + (product.price*product.units), 0)}</p>
+                        <p>Total:
+                            ${productByOrder.reduce((total, product) => total + (product.price * product.units), 0)}</p>
                     </div>
 
                     <p>Gracias por comprar en nuestra tienda! Estarás recibiendo un correo con el tracking de tu

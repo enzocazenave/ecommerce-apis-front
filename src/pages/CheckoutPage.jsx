@@ -2,7 +2,7 @@ import { ProductOnCartOut } from "../components/ProductOnCartOut";
 import { Input } from "../components";
 import {useDispatch, useSelector} from "react-redux";
 import backend from "../api/axios";
-import {overrideCart} from "../redux/Actions.js";
+import {overrideCart, removeDiscountCoupon} from "../redux/Actions.js";
 import {useNavigate} from "react-router-dom";
 
 export const CheckoutPage = () => {
@@ -28,11 +28,24 @@ export const CheckoutPage = () => {
         data.discountCode = discountCoupon.code
     }
 
-    backend.post("/purchase_orders", data).then((response) => {
-        console.log(response)
-        dispatch(overrideCart([]))
-        navigate("/order/"+response.data.id)
-    });
+    backend.post("/purchase_orders", data)
+        .then((response) => {
+          if (response.status === 200) {
+            console.log(response);
+            dispatch(overrideCart([]))
+            dispatch(removeDiscountCoupon())
+            navigate("/order/" + response.data.id)
+          }
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 400) {
+            alert("Verifique el stock y la disponiblidad del cupón.")
+            dispatch(removeDiscountCoupon())
+          } else {
+            console.error('Error:', error)
+            alert("Ocurrió un error inesperado. Por favor, inténtalo de nuevo más tarde.")
+          }
+        });
 
 
   };

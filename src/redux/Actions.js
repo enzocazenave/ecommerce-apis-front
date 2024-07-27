@@ -14,6 +14,7 @@ export const applyDiscountCoupon = (couponCode) => {
         try {
             const response = await backend.get(`${"/discount_coupons/code/"}${couponCode}`)
             const data = response.data
+
             return dispatch({
                 type: APPLY_DISCOUNTCOUPON,
                 payload: data,
