@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import {
     ADD_PRODUCT_TO_CART,
     APPLY_DISCOUNTCOUPON,
@@ -35,6 +36,12 @@ export const rootReducer = (state = initialState, action) => {
 
             if (productInCartIndex !== -1) {
                 const updatedCart = [...state.cart]
+
+                if (action.payload.units > action.payload.stock) {
+                    toast.error("No hay stock de este producto");
+                    return { ...state }
+                }
+
                 updatedCart[productInCartIndex] = {
                     ...updatedCart[productInCartIndex],
                     units: action.payload.units
@@ -52,11 +59,24 @@ export const rootReducer = (state = initialState, action) => {
             const isProductInCart = currentCart.findIndex(product => product.id === action.payload.id)
 
             if (isProductInCart !== -1) {
+                const currentUnits = currentCart[isProductInCart].units
+
+                if (currentUnits >= action.payload.stock) {
+                    toast.error("No hay stock de este producto");
+                    return { ...state }
+                }
+
+
                 currentCart[isProductInCart] = {
                     ...currentCart[isProductInCart],
                     units: currentCart[isProductInCart].units + 1
                 }
                 return {...state, cart: currentCart}
+            }
+
+            if (action.payload.stock <= 0) {
+                toast.error("No hay stock de este producto");
+                return { ...state }
             }
 
             return {

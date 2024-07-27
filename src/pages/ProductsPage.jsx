@@ -28,7 +28,7 @@ export const ProductsPage = () => {
         <div>
           <ProductList
             title={filtered ? "Resultados encontrados" : "Productos"}
-            products={filtered ? products : products.content}
+            products={products}
             columns={3}
           />
           
