@@ -3,22 +3,22 @@ import {useDispatch, useSelector} from "react-redux";
 import backend from "../api/axios.js";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {loginToCheckout, updateIsLogged} from "../redux/Actions.js";
+import {updateIsLogged} from "../redux/Actions.js";
 
 export const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const loginToCheckout = useSelector(state => state.loginToCheckout);
-    const isLogged = useSelector(state => state.isLogged);
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
     const fetchLogin = async () => {
         try {
             const response = await backend.post('/users/login', {email, password})
+            console.log(response)
             if (response.status === 200) {
-                dispatch(updateIsLogged(true)) //TODO
+                dispatch(updateIsLogged(true))
                 if (loginToCheckout) {
                     navigate('/cart/checkout')
                 } else {
