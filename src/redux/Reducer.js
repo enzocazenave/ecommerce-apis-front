@@ -60,7 +60,7 @@ export const rootReducer = (state = initialState, action) => {
             }
 
             return {
-                ...currentCart,
+                ...state,
                 cart: [...state.cart, action.payload]
             }
         case REMOVE_PRODUCT_FROM_CART:
