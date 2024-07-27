@@ -7,7 +7,6 @@ import { updateIsLogged } from "../redux/Actions.js";
 import { Link } from "react-router-dom";
 
 export const LoginPage = () => {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,7 +14,8 @@ export const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const fetchLogin = async () => {
+  const fetchLogin = async (e) => {
+    e.preventDefault()
     try {
       const response = await backend.post("/users/login", { email, password });
       console.log(response);
@@ -46,7 +46,7 @@ export const LoginPage = () => {
           </p>
         </div>
 
-        <form action="#" className="mx-auto mb-0 mt-8 max-w-md space-y-4">
+        <form onSubmit={fetchLogin} className="mx-auto mb-0 mt-8 max-w-md space-y-4">
           <div>
             <label htmlFor="email" className="sr-only">
               Email
@@ -126,10 +126,10 @@ export const LoginPage = () => {
             </p>
 
             <button
-                onClick={fetchLogin}
-                className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
+              type="submit"
+              className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
             >
-                Iniciar sesión
+              Iniciar sesión
             </button>
           </div>
         </form>
