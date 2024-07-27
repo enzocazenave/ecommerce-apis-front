@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addProductToCart } from "../redux/Actions";
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 export const ProductPage = () => {
   const state = useSelector((state) => state.cart);
