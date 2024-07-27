@@ -18,7 +18,6 @@ export const LoginPage = () => {
     const fetchLogin = async () => {
         try {
             const response = await backend.post("/users/login", {email, password});
-            console.log(response.status);
             if (response.status === 200) {
                 dispatch(updateIsLogged(true));
                 if (loginToCheckout) {

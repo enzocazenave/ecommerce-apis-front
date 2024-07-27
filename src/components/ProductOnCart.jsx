@@ -19,7 +19,6 @@ export const ProductOnCart = ({product}) => {
     };
 
     const removeProductOnCart = (productId) => {
-        console.log(productId)
         dispatch(removeCartProductById(productId));
     }
 
