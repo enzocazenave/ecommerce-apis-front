@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 const App = () => {
   return (
       <Provider store={Store}>
-        <Toaster position="top-right" />
+        <Toaster position="bottom-right" />
         <BrowserRouter>
           <Layout>
             <AppRouter />
