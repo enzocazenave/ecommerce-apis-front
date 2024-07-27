@@ -12,10 +12,10 @@ export const UpdateProductPage = () => {
   const [uRL, setconfirmarURL] = useState("");
   const [ProductOptions, setProductOptions] = useState([]);
   const [images, setImages] = useState([]);
-  const [newImages, setNewImages] = useState([])
+  const [newImages, setNewImages] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(0);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChangeStock = (event, index) => {
     setProductOptions((prev) => {
@@ -57,10 +57,10 @@ export const UpdateProductPage = () => {
   };
 
   const handleAddImage = () => {
-    if (images.some(image => image.urlImage === uRL)) {
-      setImages((prev) => [...prev, {  }]);
+    if (images.some((image) => image.urlImage === uRL)) {
+      setImages((prev) => [...prev, {}]);
     } else {
-      handleAddNewImage()
+      handleAddNewImage();
     }
 
     setconfirmarURL("");
@@ -93,43 +93,39 @@ export const UpdateProductPage = () => {
     }
   };
 
-  const updateProduct = async(product) => {
+  const updateProduct = async (product) => {
     const result = confirm("Seguro que queres actualizar el producto?");
 
     if (result) {
       await backend.put(`/products/${product.id}`, {
-        stock: product.stock
-      })
+        stock: product.stock,
+      });
 
-      toast.success("Producto actualizado")
+      toast.success("Producto actualizado");
     }
   };
 
-  const handleUpdateProduct = async(productId) => {
-    let navigateWasChange
+  const handleUpdateProduct = async (productId) => {
+    let navigateWasChange;
     const result = confirm("Seguro que queres actualizar el producto?");
 
-    const data = {}
+    const data = {};
 
     if (nameProduct.length > 0) {
-      data.name = nameProduct
-      navigateWasChange = true
+      data.name = nameProduct;
+      navigateWasChange = true;
     }
 
     if (descripcion.length > 0) {
-      data.description = descripcion
+      data.description = descripcion;
     }
 
-
     if (result) {
-      
       const imagePromises = [];
 
       ProductOptions.forEach((result) => {
-          const promise = backend.delete(
-            `/products/images/${result.id}/alls`,
-          );
-          imagePromises.push(promise);
+        const promise = backend.delete(`/products/images/${result.id}/alls`);
+        imagePromises.push(promise);
       });
 
       await Promise.all(imagePromises);
@@ -137,45 +133,39 @@ export const UpdateProductPage = () => {
       const promises = [];
 
       ProductOptions.forEach((result) => {
-        promises.push(backend.put(`/products/${result.id}`, data))
+        promises.push(backend.put(`/products/${result.id}`, data));
 
         images.forEach((image) => {
-          const promise = backend.post(
-            `/products/images/${result.id}`,
-            {
-              urlImage: image.urlImage 
-            }
-          );
+          const promise = backend.post(`/products/images/${result.id}`, {
+            urlImage: image.urlImage,
+          });
           promises.push(promise);
         });
 
         newImages.forEach((image) => {
-          const promise = backend.post(
-            `/products/images/${result.id}`,
-            {
-              urlImage: image 
-            }
-          );
+          const promise = backend.post(`/products/images/${result.id}`, {
+            urlImage: image,
+          });
           promises.push(promise);
         });
       });
 
       await Promise.all(promises);
     } else {
-      return
+      return;
     }
 
     if (navigateWasChange) {
-      navigate(`/products/update/${nameProduct}`)
+      navigate(`/products/update/${nameProduct}`);
     }
 
-    toast.success("Producto actualizado")
+    toast.success("Producto actualizado");
   };
 
   return (
     <section>
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col max-w-xl mx-auto gap-4">
           <Input
             type="text"
             label="Nombre"
@@ -190,7 +180,7 @@ export const UpdateProductPage = () => {
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
           />
-          <div className="flex gap-2">
+          <div className="grid gap-2 grid-cols-[1fr_auto]">
             <Input
               type="text"
               label="URL"
@@ -198,70 +188,99 @@ export const UpdateProductPage = () => {
               value={uRL}
               onChange={(e) => setconfirmarURL(e.target.value)}
             />
-            <button onClick={handleAddImage}>+</button>
+            <button
+              className="bg-blue-500 text-white px-3 py-2 h-fit text-sm font-medium rounded-full"
+              onClick={handleAddImage}
+            >
+              +
+            </button>
           </div>
 
           {images.map((image) => (
-            <div key={image.id} className="flex gap-2 border border-gray-300 bg-blue-50 shadow p-2 rounded-md">
+            <div
+              key={image.id}
+              className="flex gap-2 border border-gray-300 bg-blue-50 shadow p-2 rounded-md"
+            >
               <span className="flex-1">{image.urlImage}</span>
-              <button onClick={() => handleDeleteImage(image.id)} className="text-red-500">Eliminar</button>
+              <button
+                onClick={() => handleDeleteImage(image.id)}
+                className="text-red-500"
+              >
+                Eliminar
+              </button>
             </div>
           ))}
 
           {newImages.map((image, index) => (
-            <div key={index} className="flex gap-2 border border-gray-300 bg-blue-50 shadow p-2 rounded-md">
+            <div
+              key={index}
+              className="flex gap-2 border border-gray-300 bg-blue-50 shadow p-2 rounded-md"
+            >
               <span className="flex-1">{image}</span>
-              <button onClick={() => handleDeleteNewImage(index)} className="text-red-500">Eliminar</button>
+              <button
+                onClick={() => handleDeleteNewImage(index)}
+                className="text-red-500"
+              >
+                Eliminar
+              </button>
             </div>
           ))}
-          <button className="border" onClick={handleUpdateProduct}>
+          <button
+            className="bg-blue-500 text-white px-3 py-2 h-fit text-sm font-medium rounded-md"
+            onClick={handleUpdateProduct}
+          >
             Actualizar Producto
           </button>
         </div>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-          <thead className="ltr:text-left rtl:text-right">
-            <tr>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                Talle
-              </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                Stock
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {ProductOptions.map((product, index) => (
-              <tr key={index}>
-                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                  {product.size}
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  <input className="w-full text-center border rounded" type="number" value={product.stock} onChange={(e) => handleChangeStock(e, index)} />
-                </td>
-                <td className="inline-flex -space-x-px overflow-hidden rounded-md border bg-white shadow-sm">
-                  <button
-                    className="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative"
-                    onClick={() => updateProduct(product)}
-                  >
-                    {" "}
-                    Actualizar{" "}
-                  </button>
-                </td>
-                <td className="inline-flex -space-x-px overflow-hidden rounded-md border bg-white shadow-sm">
-                  <button
-                    className="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative"
-                    onClick={() => deleteProduct(product.id)}
-                  >
-                    {" "}
-                    Eliminar{" "}
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="mt-8 min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+            <thead className="ltr:text-left rtl:text-right">
+              <tr>
+                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                  Talle
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                  Stock
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {ProductOptions.map((product, index) => (
+                <tr key={index}>
+                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+                    {product.size}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                    <input
+                      className="w-full text-center border rounded"
+                      type="number"
+                      value={product.stock}
+                      onChange={(e) => handleChangeStock(e, index)}
+                    />
+                  </td>
+                  <td className="inline-flex -space-x-px overflow-hidden rounded-md border bg-white shadow-sm">
+                    <button
+                      className="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative"
+                      onClick={() => updateProduct(product)}
+                    >
+                      {" "}
+                      Actualizar{" "}
+                    </button>
+                  </td>
+                  <td className="inline-flex -space-x-px overflow-hidden rounded-md border bg-white shadow-sm">
+                    <button
+                      className="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative"
+                      onClick={() => deleteProduct(product.id)}
+                    >
+                      {" "}
+                      Eliminar{" "}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   );
