@@ -122,7 +122,7 @@ export const ProductPage = () => {
           <div className="flex-1 flex flex-col gap-4">
             <header>
               <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">
-                {currentProduct?.name}
+                {currentProduct?.name} {size?.stock === 0 ? <b className="text-red-600">(Agotado)</b> : ""}
               </h2>
 
               <p className="mt-4 text-gray-500">
@@ -144,7 +144,7 @@ export const ProductPage = () => {
 
             <div className="flex justify-between items-center">
               <p className="text-2xl">$ {currentProduct?.price}</p>
-              <button onClick={handleAddProductToCart} className="bg-blue-500 text-white px-3 py-2 h-fit text-sm font-medium rounded-full">
+              <button disabled={size?.stock === 0} onClick={handleAddProductToCart} className="bg-blue-500 text-white px-3 py-2 h-fit text-sm font-medium rounded-full">
                 + Carrito
               </button>
             </div>

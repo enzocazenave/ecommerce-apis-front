@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import backend from "../api/axios.js";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {updateIsLogged} from "../redux/Actions.js";
+import {updateIsLogged, updateUser} from "../redux/Actions.js";
 import {Link} from "react-router-dom";
 
 export const LoginPage = () => {
@@ -20,6 +20,7 @@ export const LoginPage = () => {
             const response = await backend.post("/users/login", {email, password});
             if (response.status === 200) {
                 dispatch(updateIsLogged(true));
+                dispatch(updateUser(response.data));
                 if (loginToCheckout) {
                     navigate("/cart/checkout");
                 } else {

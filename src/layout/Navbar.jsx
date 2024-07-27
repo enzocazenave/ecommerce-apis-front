@@ -5,6 +5,7 @@ import {overrideCart, updateIsLogged, updateLoginToCheckout} from "../redux/Acti
 export const Navbar = () => {
     const isLogged = useSelector(state => state.isLogged)
     const loginToCheckout = useSelector(state => state.loginToCheckout)
+    const user = useSelector(state => state.user)
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -12,6 +13,7 @@ export const Navbar = () => {
         dispatch(updateIsLogged(false))
         dispatch(updateLoginToCheckout(false))
         dispatch(overrideCart([]))
+        dispatch(updateUser({}))
         navigate('/')
     }
 
@@ -45,6 +47,12 @@ export const Navbar = () => {
                                     Productos{" "}
                                 </Link>
                             </li>
+                            { user?.admin ? (
+                                <Link to={"/products/new"} className="text-gray-500 transition hover:text-gray-500/75">
+                                    Crear producto
+                                </Link>
+                            ) : null
+                            }
                         </ul>
                     </nav>
 
