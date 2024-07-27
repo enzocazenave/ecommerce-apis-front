@@ -3,7 +3,7 @@ import {
     ADD_PRODUCT_TO_CART,
     APPLY_DISCOUNTCOUPON,
     REMOVE_DISCOUNTCOUPON,
-    UPDATE_CART, REMOVE_PRODUCT_FROM_CART, LOGINTOCHECKOUT, UPDATEISLOGGED, OVERRIDE_CART
+    UPDATE_CART, REMOVE_PRODUCT_FROM_CART, LOGINTOCHECKOUT, UPDATEISLOGGED, OVERRIDE_CART,UPDATEUSER
 } from "./Action-types.js";
 
 const initialState = {
@@ -11,7 +11,8 @@ const initialState = {
     discountCoupon: {},
     products: [],
     isLogged: false,
-    loginToCheckout: false
+    loginToCheckout: false,
+    user: {}
 }
 
 export const rootReducer = (state = initialState, action) => {
@@ -66,6 +67,7 @@ export const rootReducer = (state = initialState, action) => {
                     return { ...state }
                 }
 
+                toast.success("Producto agregado al carrito");
 
                 currentCart[isProductInCart] = {
                     ...currentCart[isProductInCart],
@@ -78,6 +80,8 @@ export const rootReducer = (state = initialState, action) => {
                 toast.error("No hay stock de este producto");
                 return { ...state }
             }
+
+            toast.success("Producto agregado al carrito");
 
             return {
                 ...state,
@@ -96,6 +100,8 @@ export const rootReducer = (state = initialState, action) => {
             return {...state, loginToCheckout: action.payload}
         case UPDATEISLOGGED:
             return {...state, isLogged: action.payload}
+        case UPDATEUSER:
+            return {...state, user: action.payload}
         default:
             return state
     }

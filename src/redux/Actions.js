@@ -4,7 +4,8 @@ import {
     REMOVE_DISCOUNTCOUPON,
     UPDATE_CART,
     REMOVE_PRODUCT_FROM_CART,
-    LOGINTOCHECKOUT, UPDATEISLOGGED, OVERRIDE_CART
+    LOGINTOCHECKOUT, UPDATEISLOGGED, OVERRIDE_CART,
+    UPDATEUSER
 } from "./Action-types.js";
 import backend from "../api/axios.js";
 
@@ -116,3 +117,16 @@ export const overrideCart = (cart) => {
     }
 }
 
+export const updateUser = (user) => {
+    return async (dispatch) => {
+        try {
+            return dispatch({
+                type: UPDATEUSER,
+                payload: user,
+            })
+        } catch (error) {
+            console.error("Error al actualizar usuario:", error);
+            alert(error.response.data)
+        }
+    }
+}

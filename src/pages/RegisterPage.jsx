@@ -56,6 +56,7 @@ export const RegisterPage = () => {
         return response.json();
       })
       .then((data) => {
+        dispatch(updateUser(response.data));
         console.log("Usuario registrado:", data);
       })
       .catch((error) => {
