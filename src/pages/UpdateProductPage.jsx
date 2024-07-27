@@ -2,6 +2,7 @@ import { Input } from "../components/Input.jsx";
 import { useEffect, useState } from "react";
 import backend from "../api/axios";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export const UpdateProductPage = () => {
   const { name } = useParams();
@@ -15,6 +16,14 @@ export const UpdateProductPage = () => {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(0);
   const navigate = useNavigate()
+
+  const handleChangeStock = (event, index) => {
+    setProductOptions((prev) => {
+      const newData = [...prev];
+      newData[index].stock = parseInt(event.target.value);
+      return newData;
+    });
+  };
 
   useEffect(() => {
     backend.get("/categories").then((response) => {
@@ -84,8 +93,16 @@ export const UpdateProductPage = () => {
     }
   };
 
-  const updateProduct = (productId) => {
-    console.log(productId);
+  const updateProduct = async(product) => {
+    const result = confirm("Seguro que queres actualizar el producto?");
+
+    if (result) {
+      await backend.put(`/products/${product.id}`, {
+        stock: product.stock
+      })
+
+      toast.success("Producto actualizado")
+    }
   };
 
   const handleUpdateProduct = async(productId) => {
@@ -131,14 +148,28 @@ export const UpdateProductPage = () => {
           );
           promises.push(promise);
         });
+
+        newImages.forEach((image) => {
+          const promise = backend.post(
+            `/products/images/${result.id}`,
+            {
+              urlImage: image 
+            }
+          );
+          promises.push(promise);
+        });
       });
 
       await Promise.all(promises);
+    } else {
+      return
     }
 
     if (navigateWasChange) {
       navigate(`/products/update/${nameProduct}`)
     }
+
+    toast.success("Producto actualizado")
   };
 
   return (
@@ -188,7 +219,6 @@ export const UpdateProductPage = () => {
           </button>
         </div>
       </div>
-      -------------------------------
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="ltr:text-left rtl:text-right">
@@ -204,16 +234,16 @@ export const UpdateProductPage = () => {
           <tbody className="divide-y divide-gray-200">
             {ProductOptions.map((product, index) => (
               <tr key={index}>
-                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
                   {product.size}
                 </td>
                 <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  {product.stock}
+                  <input className="w-full text-center border rounded" type="number" value={product.stock} onChange={(e) => handleChangeStock(e, index)} />
                 </td>
                 <td className="inline-flex -space-x-px overflow-hidden rounded-md border bg-white shadow-sm">
                   <button
                     className="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative"
-                    onClick={() => updateProduct(index)}
+                    onClick={() => updateProduct(product)}
                   >
                     {" "}
                     Actualizar{" "}
