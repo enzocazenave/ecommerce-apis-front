@@ -18,7 +18,7 @@ export const CartPage = () => {
         dispatch(applyDiscountCoupon(form.DiscountValue))
     }
 
-    const cleanUpDiscountCoupon = () => {
+    const cleanUpDiscountCoupon = (event) => {
         event.preventDefault()
         dispatch(removeDiscountCoupon())
     }
