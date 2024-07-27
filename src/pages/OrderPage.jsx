@@ -1,54 +1,79 @@
-import { useParams } from "react-router-dom";
-import { ProductOnCart } from "../components";
-import { ProductOnCartOut } from "../components/ProductOnCartOut";
-
-const productsOnCart = [
-  {
-    id: 1,
-    name: "Remera Básica",
-    price: 16250,
-    size: "XL",
-    description: "Gris",
-    units: 1,
-    image:"https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
-  },
-  {
-    id: 2,
-    name: "Remera Básica",
-    price: 16250,
-    size: "XL",
-    description: "Gris",
-    units: 2,
-    image:"https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
-  }
-];
+import {useParams} from "react-router-dom";
+import {ProductOnCartOut} from "../components/ProductOnCartOut";
+import {useEffect, useState} from "react";
+import backend from "../api/axios.js";
+import {useSelector} from "react-redux";
 
 export const OrderPage = () => {
-  const { id } = useParams();
-  
-  return (
-    <section>
-      <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        <div className="mx-auto max-w-3xl">
-          <header>
-            <h1>Tu Order fue pagada con éxito</h1>
-          </header>
+    const discountCoupon = useSelector(state => state.discountCoupon);
 
-          <div className="mt-8">
-            <ul className="space-y-4">
-              {productsOnCart.map((product) => (
-                <ProductOnCartOut key={product.id} product={product} />
-              ))}
-            </ul>
-          </div>
+    const {id} = useParams();
+    const [productByOrder, setProductByOrder] = useState([]);
 
-          <div className="flex justify-between mt-10">
-            <p>Total: ${productsOnCart.reduce((total, product) => total + product.price, 0)}</p>
-          </div>
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const purchaseResponse = await backend.get(`purchase_products/purchases_orders/${id}`)
+                const purchasedProducts = purchaseResponse.data;
 
-          <p>Gracias por comprar en nuestra tienda! Estarás recibiendo un correo con el tracking de tu pedido.</p>
-        </div>
-      </div>
-    </section>
-  );
+                const productDetailsPromises = purchasedProducts.map(async (purchasedProduct) => {
+                    const productDetailsResponse = await backend.get(`/products/${purchasedProduct.productId}`)
+                    const productImageResponse = await backend.get(`/products/images/${purchasedProduct.productId}`)
+                    return {
+                        productDetails: productDetailsResponse.data,
+                        productImage: productImageResponse.data.length > 0 ? productImageResponse.data[0].urlImage : null
+                    }
+                })
+
+                const productDetailsResults = await Promise.all(productDetailsPromises)
+
+                const formattedProducts = purchasedProducts.map((purchasedProduct, index) => {
+                    const {productDetails, productImage} = productDetailsResults[index]
+
+                    return {
+                        id: productDetails.id,
+                        name: productDetails.name,
+                        price: purchasedProduct?.price * (100-purchasedProduct.purchaseOrder?.discountCoupon?.percentage)/100,
+                        size: productDetails.size,
+                        description: productDetails.description,
+                        units: purchasedProduct.unit,
+                        image: productImage,
+                        percentage: purchasedProduct.purchaseOrder?.discountCoupon?.percentage,
+                    };
+                });
+                console.log(formattedProducts)
+                setProductByOrder(formattedProducts);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        };
+
+        fetchProducts();
+    }, [id]);
+    return (
+        <section>
+            <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+                <div className="mx-auto max-w-3xl">
+                    <header>
+                        <h1>Tu Order fue pagada con éxito</h1>
+                    </header>
+
+                    <div className="mt-8">
+                        <ul className="space-y-4">
+                            {productByOrder.map((product) => (
+                                <ProductOnCartOut key={product.id} product={product}/>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div className="flex justify-between mt-10">
+                        <p>Total: ${productByOrder.reduce((total, product) => total + (product.price*product.units), 0)}</p>
+                    </div>
+
+                    <p>Gracias por comprar en nuestra tienda! Estarás recibiendo un correo con el tracking de tu
+                        pedido.</p>
+                </div>
+            </div>
+        </section>
+    );
 };
