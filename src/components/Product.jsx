@@ -7,7 +7,7 @@ export const Product = ({ product }) => {
     <li className="overflow-hidden">
       <Link to={`/products/${product.id}`}>
         <img 
-          src={product.image[0].urlImage ?? ""}
+          src={product?.image[0]?.urlImage ?? ""}
           alt={product.name}
           className="h-[350px] w-full object-cover sm:h-[450px] rounded-md hover:opacity-90 transition-opacity"
         />
