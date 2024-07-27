@@ -18,9 +18,6 @@ export const ProductOnCartOut = ({ product }) => {
             <p className="text-xs">Talle {product.size}</p>
           </div>
 
-          <div>
-            <p className="text-xs">Color {product.description}</p>
-          </div>
             <p className="text-xs">
               {product.units} unidades
             </p>

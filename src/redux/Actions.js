@@ -18,8 +18,12 @@ export const applyDiscountCoupon = (couponCode) => {
                 payload: data,
             })
         } catch (error) {
-            console.error("Error aplicando cupón:", error);
-            alert(error.response.data)
+            if (error.response.status === 404) {
+                alert("cupón invalido.")
+            } else {
+                console.error("Error aplicando cupón:", error);
+                alert(error.response.data)
+            }
         }
     }
 }
@@ -84,7 +88,7 @@ export const updateLoginToCheckout = (booleanValue) => {
     }
 }
 
-export  const  updateIsLogged = (booleanValue) => {
+export const updateIsLogged = (booleanValue) => {
     return async (dispatch) => {
         try {
             return dispatch({
@@ -98,7 +102,7 @@ export  const  updateIsLogged = (booleanValue) => {
     }
 }
 
-export  const  overrideCart = (cart) => {
+export const overrideCart = (cart) => {
     return async (dispatch) => {
         try {
             return dispatch({
