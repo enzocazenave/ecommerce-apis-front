@@ -1,6 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {overrideCart, updateIsLogged, updateLoginToCheckout} from "../redux/Actions.js";
+import {overrideCart, updateIsLogged, updateLoginToCheckout, updateUser} from "../redux/Actions.js";
 import toast from "react-hot-toast";
 
 export const Navbar = () => {
@@ -14,8 +14,8 @@ export const Navbar = () => {
         dispatch(updateIsLogged(false))
         dispatch(updateLoginToCheckout(false))
         dispatch(overrideCart([]))
+        toast.success("Adión, "+ user.name)
         dispatch(updateUser({}))
-        toast.success("Adiós, "+user.name);
         navigate('/')
     }
 
@@ -79,11 +79,11 @@ export const Navbar = () => {
                                         to="/register">
                                         Crear cuenta
                                     </Link>
-                                </>) : (<Link
+                                </>) : (<button
                                 className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
                                 onClick={() => handleLogout()}>
                                 Cerrar sesión
-                            </Link>)
+                            </button>)
                             }
                         </div>
                     </div>
