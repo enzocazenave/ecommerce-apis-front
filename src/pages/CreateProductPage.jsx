@@ -1,6 +1,7 @@
 import { Input } from "../components/Input.jsx";
 import { useEffect, useState } from "react";
 import backend from "../api/axios";
+import toast from "react-hot-toast";
 
 export const CreateProductPage = () => {
   //Variables http://127.0.0.1:3000/products
@@ -51,8 +52,8 @@ export const CreateProductPage = () => {
       const promise = backend.post("/products", {
         name: product.Nombre,
         description: product.Descripcion,
-        idCategory: 1,
-        price: 100,
+        idCategory: selectedCategory,
+        price: precio,
         stock: parseInt(product.Stock),
         size: product.Talle,
       });
@@ -78,6 +79,10 @@ export const CreateProductPage = () => {
 
       await Promise.all(imagePromises);
     });
+
+    toast.success("Producto creado exitosamente", { duration: 5000 })
+
+    handleReset();
   };
 
   // Validaciones
@@ -123,6 +128,18 @@ export const CreateProductPage = () => {
 
     setTalleSeleccionado(nuevosTalles[0]);
     setTallesDisponibles(nuevosTalles);
+  };
+
+  const handleReset = () => {
+    setNombre("");
+    setStock("");
+    setPrecio("");
+    setDescripcion("");
+    setSelectedCategory(0);
+    setTallesDisponibles([]);
+    setTalleSeleccionado(0);
+    setImages([]);
+    setData([])
   };
 
   const handleAddProduct = (event) => {
